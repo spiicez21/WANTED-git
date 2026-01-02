@@ -78,3 +78,56 @@ exports.getUserRepos = async (req, res) => {
         res.status(err.response ? err.response.status : 500).json({ error: err.message });
     }
 };
+
+exports.getContributions = async (req, res) => {
+    if (!req.user || !req.user.access_token) {
+        return res.status(401).json({ error: 'GitHub access token missing' });
+    }
+
+    const query = `
+        query($userName:String!) {
+            user(login: $userName) {
+                contributionsCollection {
+                    contributionCalendar {
+                        totalContributions
+                        weeks {
+                            contributionDays {
+                                contributionCount
+                                date
+                                color
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    `;
+
+    const username = req.query.username || req.user.username;
+
+    try {
+        const response = await axios.post('https://api.github.com/graphql',
+            {
+                query: query,
+                variables: { userName: username }
+            },
+            {
+                headers: {
+                    'Authorization': `Bearer ${req.user.access_token}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        if (response.data.errors) {
+            console.error('GitHub GraphQL Errors:', response.data.errors);
+            return res.status(500).json({ error: 'GitHub API error', details: response.data.errors });
+        }
+
+        const calendar = response.data.data.user.contributionsCollection.contributionCalendar;
+        res.json(calendar);
+    } catch (err) {
+        console.error('Error fetching contributions:', err.message);
+        res.status(500).json({ error: 'Failed to fetch contribution data' });
+    }
+};

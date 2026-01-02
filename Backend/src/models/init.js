@@ -39,7 +39,25 @@ const createTables = async () => {
         `;
 
         await db.query(queryText);
-        console.log('Tables created successfully');
+
+        // Ensure columns exist in case table was created with an older schema
+        const alterQueries = [
+            'ALTER TABLE users ADD COLUMN IF NOT EXISTS email VARCHAR(255)',
+            'ALTER TABLE users ADD COLUMN IF NOT EXISTS avatar_url TEXT',
+            'ALTER TABLE users ADD COLUMN IF NOT EXISTS access_token TEXT',
+            'ALTER TABLE users ADD COLUMN IF NOT EXISTS xp INTEGER DEFAULT 0',
+            'ALTER TABLE users ADD COLUMN IF NOT EXISTS rank VARCHAR(50) DEFAULT \'Rookie\'',
+            'ALTER TABLE users ADD COLUMN IF NOT EXISTS wallet_balance DECIMAL(10, 2) DEFAULT 0.00',
+            'ALTER TABLE users ADD COLUMN IF NOT EXISTS bio TEXT',
+            'ALTER TABLE users ADD COLUMN IF NOT EXISTS portfolio_url TEXT',
+            'ALTER TABLE users ADD COLUMN IF NOT EXISTS twitter_handle TEXT'
+        ];
+
+        for (const query of alterQueries) {
+            await db.query(query);
+        }
+
+        console.log('Tables created and schema verified successfully');
     } catch (err) {
         console.error('Error creating tables', err);
     }

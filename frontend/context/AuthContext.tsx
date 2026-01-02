@@ -11,6 +11,9 @@ interface User {
     xp: number;
     rank: string;
     wallet_balance: string;
+    bio: string | null;
+    portfolio_url: string | null;
+    twitter_handle: string | null;
 }
 
 interface AuthContextType {
@@ -28,17 +31,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const fetchUser = async () => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/auth/me`, {
+            console.log('AuthContext: Fetching user...');
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5050'}/auth/me`, {
                 credentials: 'include',
             });
+            console.log('AuthContext: Fetch status:', response.status);
             if (response.ok) {
                 const data = await response.json();
+                console.log('AuthContext: User data received:', data.username);
                 setUser(data);
             } else {
+                console.log('AuthContext: Not authenticated');
                 setUser(null);
             }
         } catch (err) {
-            console.error('Failed to fetch user', err);
+            console.error('AuthContext: Failed to fetch user', err);
             setUser(null);
         } finally {
             setLoading(false);
@@ -50,12 +57,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, []);
 
     const login = () => {
-        window.location.href = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/auth/github`;
+        window.location.href = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5050'}/auth/github`;
     };
 
     const logout = async () => {
         try {
-            await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/auth/logout`, {
+            await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5050'}/auth/logout`, {
                 credentials: 'include',
             });
             setUser(null);

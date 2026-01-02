@@ -1,43 +1,65 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import LeaderboardRow from "../components/LeaderboardRow";
+import { useAuth } from '@/context/AuthContext';
 
-const mockLeaderboard = Array.from({ length: 40 }, (_, i) => ({
-    rank: i + 1,
-    username: [
-        "Vercel", "DanAbramov", "Shadcn", "ThePrimeagen", "LeeRobinson", "RichHarris", "TannerLinsley",
-        "KentCDodds", "SarahDrasner", "CassieCodes", "JasonLengstorf", "AddyOsmani", "WesBos", "ScottTolinski",
-        "JenSimmons", "RachelAndrew", "LeaVerou", "ChrisCoyier", "UnaKravets", "AdamArgyle"
-    ][i % 20] + (i >= 20 ? `_v${Math.floor(i / 20) + 1}` : ""),
-    avatar: `https://i.pravatar.cc/150?u=${i}`,
-    level: Math.max(1, 15 - Math.floor(i / 3)),
-    xp: 50000 - (i * 1200),
-    cr: 15000 - (i * 350),
-    totalBounties: Math.max(1, 35 - i)
-}));
-
-const currentUser = { rank: 42, username: "Yugabharathi", avatar: "https://github.com/Yugabharathi21.png", level: 5, xp: 8500, cr: 2100, totalBounties: 4 };
+interface LeaderboardUser {
+    id: number;
+    username: string;
+    avatar_url: string | null;
+    xp: number;
+    rank: string;
+    wallet_balance: string;
+    bio: string | null;
+    portfolio_url: string | null;
+    twitter_handle: string | null;
+    display_rank?: number; // Calculated rank
+}
 
 export default function LeaderboardPage() {
+    const { user: currentUser } = useAuth();
+    const [users, setUsers] = useState<LeaderboardUser[]>([]);
+    const [loading, setLoading] = useState(true);
     const [expandedRank, setExpandedRank] = useState<number | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5050'}/api/users`);
+                if (response.ok) {
+                    const data = await response.json();
+                    // Sort by XP descending and add display_rank
+                    const sorted = (data as LeaderboardUser[])
+                        .sort((a, b) => b.xp - a.xp)
+                        .map((u, index) => ({ ...u, display_rank: index + 1 }));
+                    setUsers(sorted);
+                }
+            } catch (err) {
+                console.error('Failed to fetch leaderboard users', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUsers();
+    }, []);
 
     const toggleRow = (rank: number) => {
         setExpandedRank(prev => prev === rank ? null : rank);
     };
 
-    const isUserInTopList = mockLeaderboard.some(user => user.username === currentUser.username);
-
     // Pagination Logic
-    const totalPages = Math.ceil(mockLeaderboard.length / itemsPerPage);
+    const totalPages = Math.ceil(users.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
-    const currentList = mockLeaderboard.slice(startIndex, startIndex + itemsPerPage);
+    const currentList = users.slice(startIndex, startIndex + itemsPerPage);
 
-    const isUserOnCurrentPage = currentList.some(user => user.username === currentUser.username);
+    const currentUserInGlobal = users.find(u => u.username === currentUser?.username);
+    const isUserOnCurrentPage = currentList.some(u => u.username === currentUser?.username);
     return (
         <main className="min-h-screen bg-[#060606] text-[#EDEDED] font-clash selection:bg-[#D3E97A] selection:text-black flex flex-col">
             <Navbar />
@@ -73,42 +95,58 @@ export default function LeaderboardPage() {
                     </div>
 
                     {/* List */}
-                    <div className="flex flex-col gap-2">
-                        {currentList.map((user) => (
-                            <LeaderboardRow
-                                key={user.rank}
-                                rank={user.rank}
-                                username={user.username}
-                                avatar={user.avatar}
-                                level={user.level}
-                                xp={user.xp}
-                                cr={user.cr}
-                                totalBounties={user.totalBounties}
-                                isExpanded={expandedRank === user.rank}
-                                onToggle={() => toggleRow(user.rank)}
-                            />
-                        ))}
-
-                        {/* Sticky User Rank */}
-                        {!isUserOnCurrentPage && (
+                    <div className="flex flex-col gap-2 min-h-[400px]">
+                        {loading ? (
+                            <div className="flex-1 flex flex-col items-center justify-center gap-4 py-20 border border-white/5 bg-[#0A0A0A] rounded-xl">
+                                <div className="w-8 h-8 border-2 border-[#D3E97A] border-t-transparent rounded-full animate-spin"></div>
+                                <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Synchronizing Ranks...</span>
+                            </div>
+                        ) : (
                             <>
-                                <div className="flex items-center gap-4 px-6 py-2 mt-4">
-                                    <div className="h-[1px] flex-1 bg-white/5"></div>
-                                    <span className="text-[10px] font-bold text-zinc-700 uppercase tracking-[0.3em]">Your Position</span>
-                                    <div className="h-[1px] flex-1 bg-white/5"></div>
-                                </div>
-                                <LeaderboardRow
-                                    rank={currentUser.rank}
-                                    username={currentUser.username}
-                                    avatar={currentUser.avatar}
-                                    level={currentUser.level}
-                                    xp={currentUser.xp}
-                                    cr={currentUser.cr}
-                                    totalBounties={currentUser.totalBounties}
-                                    isExpanded={expandedRank === currentUser.rank}
-                                    onToggle={() => toggleRow(currentUser.rank)}
-                                    isCurrentUser={true}
-                                />
+                                {currentList.map((u) => (
+                                    <LeaderboardRow
+                                        key={u.id}
+                                        rank={u.display_rank || 0}
+                                        username={u.username}
+                                        avatar_url={u.avatar_url}
+                                        bio={u.bio}
+                                        portfolio_url={u.portfolio_url}
+                                        twitter_handle={u.twitter_handle}
+                                        level={Math.floor(u.xp / 1000) + 1}
+                                        xp={u.xp}
+                                        cr={parseFloat(u.wallet_balance)}
+                                        totalBounties={0} // To be implemented with bounty system
+                                        isExpanded={expandedRank === u.display_rank}
+                                        onToggle={() => toggleRow(u.display_rank!)}
+                                        isCurrentUser={u.username === currentUser?.username}
+                                    />
+                                ))}
+
+                                {/* Sticky User Rank */}
+                                {currentUserInGlobal && !isUserOnCurrentPage && (
+                                    <>
+                                        <div className="flex items-center gap-4 px-6 py-2 mt-4">
+                                            <div className="h-[1px] flex-1 bg-white/5"></div>
+                                            <span className="text-[10px] font-bold text-zinc-700 uppercase tracking-[0.3em]">Your Position</span>
+                                            <div className="h-[1px] flex-1 bg-white/5"></div>
+                                        </div>
+                                        <LeaderboardRow
+                                            rank={currentUserInGlobal.display_rank || 0}
+                                            username={currentUserInGlobal.username}
+                                            avatar_url={currentUserInGlobal.avatar_url}
+                                            bio={currentUserInGlobal.bio}
+                                            portfolio_url={currentUserInGlobal.portfolio_url}
+                                            twitter_handle={currentUserInGlobal.twitter_handle}
+                                            level={Math.floor(currentUserInGlobal.xp / 1000) + 1}
+                                            xp={currentUserInGlobal.xp}
+                                            cr={parseFloat(currentUserInGlobal.wallet_balance)}
+                                            totalBounties={0}
+                                            isExpanded={expandedRank === currentUserInGlobal.display_rank}
+                                            onToggle={() => toggleRow(currentUserInGlobal.display_rank!)}
+                                            isCurrentUser={true}
+                                        />
+                                    </>
+                                )}
                             </>
                         )}
                     </div>
@@ -127,8 +165,8 @@ export default function LeaderboardPage() {
                                             setCurrentPage(1); // Reset to first page
                                         }}
                                         className={`px-3 py-1 text-[10px] font-bold rounded transition-all ${itemsPerPage === count
-                                                ? 'bg-white/10 text-[#D3E97A] border border-[#D3E97A]/20'
-                                                : 'text-zinc-500 hover:text-white border border-transparent'
+                                            ? 'bg-white/10 text-[#D3E97A] border border-[#D3E97A]/20'
+                                            : 'text-zinc-500 hover:text-white border border-transparent'
                                             }`}
                                     >
                                         {count}
@@ -161,8 +199,8 @@ export default function LeaderboardPage() {
                                             key={pageNum}
                                             onClick={() => setCurrentPage(pageNum)}
                                             className={`w-8 h-8 flex items-center justify-center text-[10px] font-bold rounded transition-all ${currentPage === pageNum
-                                                    ? 'bg-[#D3E97A] text-black'
-                                                    : 'border border-white/5 text-zinc-500 hover:text-white hover:border-white/10'
+                                                ? 'bg-[#D3E97A] text-black'
+                                                : 'border border-white/5 text-zinc-500 hover:text-white hover:border-white/10'
                                                 }`}
                                         >
                                             {pageNum}

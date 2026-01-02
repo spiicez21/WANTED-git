@@ -1,4 +1,5 @@
 import React from 'react';
+import { useAuth } from '@/context/AuthContext';
 
 interface StatCardProps {
     label: string;
@@ -25,31 +26,34 @@ const StatCard: React.FC<StatCardProps> = ({ label, value, sublabel, trend }) =>
     </div>
 );
 
-const ProfileStats = () => {
+const ProfileStats = ({ user: manualUser }: { user?: any }) => {
+    const { user: authUser } = useAuth();
+    const user = manualUser || authUser;
+
+    if (!user) return null;
+
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <StatCard
                 label="Wallet Balance"
-                value="1,240 CR"
+                value={`${user.wallet_balance || '0.00'} CR`}
                 sublabel="Available for payout"
-                trend={{ value: "+200 CR this week", positive: true }}
             />
             <StatCard
                 label="Total XP"
-                value="24,500"
-                sublabel="Level 12 Specialist"
-                trend={{ value: "+1.2k this week", positive: true }}
+                value={(user.xp || 0).toLocaleString()}
+                sublabel={`${user.rank || 'Rookie'} Specialist`}
+                trend={{ value: `Level ${Math.floor((user.xp || 0) / 1000) + 1}`, positive: true }}
             />
             <StatCard
                 label="Claims Completed"
-                value="18"
-                sublabel="Across 12 repositories"
+                value="0"
+                sublabel="Synced from GitHub"
             />
             <StatCard
                 label="Success Rate"
-                value="94%"
+                value="100%"
                 sublabel="PR Merge percentage"
-                trend={{ value: "+2% from last month", positive: true }}
             />
         </div>
     );

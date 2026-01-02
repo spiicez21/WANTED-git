@@ -23,22 +23,26 @@ passport.use(new GitHubStrategy({
 },
     async (accessToken, refreshToken, profile, done) => {
         try {
+            console.log('GitHub OAuth Success:', profile.username);
+
             const githubId = profile.id;
             const username = profile.username;
-            const email = profile.emails && profile.emails[0] ? profile.emails[0].value : null;
-            const avatarUrl = profile.photos && profile.photos[0] ? profile.photos[0].value : null;
+            const email = profile.emails && profile.emails[0] ? profile.emails[0].value : (profile._json && profile._json.email);
+            const avatarUrl = profile.photos && profile.photos[0] ? profile.photos[0].value : (profile._json && profile._json.avatar_url);
+
+            console.log('User Data Extracted:', { username, email, avatarUrl });
 
             // Check if user exists
             let result = await db.query('SELECT * FROM users WHERE github_id = $1', [githubId]);
 
             if (result.rows.length === 0) {
-                // Create user
+                console.log('Creating new user...');
                 result = await db.query(
                     'INSERT INTO users (github_id, username, email, avatar_url, access_token) VALUES ($1, $2, $3, $4, $5) RETURNING *',
                     [githubId, username, email, avatarUrl, accessToken]
                 );
             } else {
-                // Update access token
+                console.log('Updating existing user access token...');
                 result = await db.query(
                     'UPDATE users SET access_token = $1, avatar_url = $2, email = $3 WHERE github_id = $4 RETURNING *',
                     [accessToken, avatarUrl, email, githubId]
@@ -47,6 +51,7 @@ passport.use(new GitHubStrategy({
 
             return done(null, result.rows[0]);
         } catch (err) {
+            console.error('Passport Strategy Error:', err);
             return done(err, null);
         }
     }));

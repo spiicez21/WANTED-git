@@ -1,18 +1,61 @@
 'use client';
 
 import Link from 'next/link';
-import React, { useState } from 'react';
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import ProfileStats from "../components/ProfileStats";
-import ClaimCard from "../components/ClaimCard";
-import ShareProfileModal from "../components/ShareProfileModal";
+import React, { useState, useEffect } from 'react';
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
+import ProfileStats from "../../components/ProfileStats";
+import ClaimCard from "../../components/ClaimCard";
+import ShareProfileModal from "../../components/ShareProfileModal";
 import { useAuth } from '@/context/AuthContext';
-import ContributionHeatmap from '../components/ContributionHeatmap';
+import ContributionHeatmap from '../../components/ContributionHeatmap';
+import { useParams } from 'next/navigation';
 
-export default function ProfilePage() {
+interface UserData {
+    id: number;
+    github_id: string;
+    username: string;
+    avatar_url: string | null;
+    xp: number;
+    rank: string;
+    wallet_balance: string;
+    bio: string | null;
+    portfolio_url: string | null;
+    twitter_handle: string | null;
+}
+
+export default function PublicProfilePage() {
+    const params = useParams();
+    const username = params.username as string;
+    const { user: viewer } = useAuth();
+
+    const [user, setUser] = useState<UserData | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
     const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-    const { user, loading } = useAuth();
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5050'}/api/users/username/${username}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setUser(data);
+                } else {
+                    setError(true);
+                }
+            } catch (err) {
+                console.error('Failed to fetch public profile', err);
+                setError(true);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (username) {
+            fetchUserData();
+        }
+    }, [username]);
 
     if (loading) {
         return (
@@ -22,16 +65,16 @@ export default function ProfilePage() {
         );
     }
 
-    if (!user) {
+    if (error || !user) {
         return (
             <main className="min-h-screen bg-[#060606] text-[#EDEDED] font-clash flex flex-col">
                 <Navbar />
                 <div className="flex-1 flex flex-col items-center justify-center gap-6 px-8 text-center">
-                    <h1 className="text-4xl font-technor font-bold uppercase">Signal Lost</h1>
-                    <p className="text-zinc-500 max-w-sm">You must be synchronized with your GitHub account to access your specialist profile.</p>
-                    <Link href="/">
+                    <h1 className="text-4xl font-technor font-bold uppercase text-red-500">Node Not Found</h1>
+                    <p className="text-zinc-500 max-w-sm">The specialist profile for <span className="text-white font-mono">@{username}</span> could not be located in the grid.</p>
+                    <Link href="/leaderboard">
                         <button className="px-8 py-3 bg-[#D3E97A] text-black font-bold uppercase tracking-widest text-xs hover:scale-105 transition-transform rounded-full">
-                            Return to Base
+                            Search Leaderboard
                         </button>
                     </Link>
                 </div>
@@ -39,6 +82,8 @@ export default function ProfilePage() {
             </main>
         );
     }
+
+    const isOwnProfile = viewer?.username === user.username;
 
     return (
         <main className="min-h-screen bg-[#060606] text-[#EDEDED] font-clash selection:bg-[#D3E97A] selection:text-black flex flex-col">
@@ -106,7 +151,7 @@ export default function ProfilePage() {
                                         <div className="text-xs text-zinc-500 uppercase tracking-widest mt-2">Specialist ID #{user.github_id}</div>
                                     </div>
                                 </div>
-                                <span className="text-xs text-zinc-500 uppercase tracking-wider font-mono">Level {Math.floor((user.xp || 0) / 1000) + 1} • {user.xp || 0} XP</span>
+                                <span className="text-xs text-zinc-500 uppercase tracking-wider font-mono">Level {Math.floor(user.xp / 1000) + 1} • {user.xp || 0} XP</span>
                             </div>
                             <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
                                 <div className="h-full bg-[#D3E97A] shadow-[0_0_20px_rgba(211,233,122,0.4)] transition-all duration-1000"
@@ -117,11 +162,17 @@ export default function ProfilePage() {
                     </div>
 
                     <div className="flex gap-4">
-                        <Link href="/profile/edit">
-                            <button className="px-6 py-2 border border-white/10 hover:border-[#D3E97A] hover:text-[#D3E97A] transition-all text-xs font-bold uppercase tracking-wider rounded-full">
-                                Edit Profile
+                        {isOwnProfile ? (
+                            <Link href="/profile/edit">
+                                <button className="px-6 py-2 border border-white/10 hover:border-[#D3E97A] hover:text-[#D3E97A] transition-all text-xs font-bold uppercase tracking-wider rounded-full">
+                                    Edit Profile
+                                </button>
+                            </Link>
+                        ) : (
+                            <button className="px-6 py-2 border border-white/10 text-white transition-all text-xs font-bold uppercase tracking-wider rounded-full opacity-50 cursor-not-allowed">
+                                Network Specialist
                             </button>
-                        </Link>
+                        )}
                         <button
                             onClick={() => setIsShareModalOpen(true)}
                             className="px-6 py-2 bg-[#D3E97A] text-black hover:bg-white transition-all text-xs font-bold uppercase tracking-wider rounded-full"
@@ -142,7 +193,7 @@ export default function ProfilePage() {
                         Stats Overview
                         <div className="h-[1px] flex-1 bg-white/5"></div>
                     </h2>
-                    <ProfileStats />
+                    <ProfileStats user={user} />
                 </div>
 
                 {/* Recent Activity */}
@@ -152,28 +203,12 @@ export default function ProfilePage() {
                             Recent Activity
                             <div className="h-[1px] flex-1 bg-white/5"></div>
                         </h2>
-                        <div className="flex gap-6 ml-8">
-                            <span className="text-xs font-bold uppercase tracking-wider text-[#D3E97A] cursor-pointer">Bounties</span>
-                            <span className="text-xs font-bold uppercase tracking-wider text-zinc-600 hover:text-white cursor-pointer transition-colors">Contributions</span>
-                        </div>
                     </div>
 
                     <div className="grid grid-cols-1 gap-4">
-                        {/* Reuse ClaimCard for consistency */}
-                        <ClaimCard
-                            repo="facebook/react"
-                            title="Fix hydration error in Suspense boundaries with server components"
-                            xp={5000}
-                            status="In Progress"
-                            dateClaimed="Dec 20, 2025"
-                        />
-                        <ClaimCard
-                            repo="vercel/next.js"
-                            title="Optimize image optimization API for better caching performance"
-                            xp={2500}
-                            status="Under Review"
-                            dateClaimed="Dec 18, 2025"
-                        />
+                        <div className="p-8 border border-white/5 bg-[#0A0A0A] rounded-2xl text-center">
+                            <p className="text-zinc-500 text-xs uppercase tracking-widest">No recent bounty activity detected in this sector.</p>
+                        </div>
                     </div>
                 </div>
             </div>

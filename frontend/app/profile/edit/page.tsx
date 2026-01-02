@@ -1,17 +1,97 @@
 'use client';
 
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import AvatarUploadModal from "../../components/AvatarUploadModal";
-import { Bell, Shield, User, Link as LinkIcon, Globe, Twitter, Github, Cpu } from 'lucide-react';
+import { Bell, Shield, User, Link as LinkIcon, Globe, Twitter, Github, Cpu, Save } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 
 type Tab = 'general' | 'notifications' | 'accounts' | 'security';
 
 export default function EditProfilePage() {
+    const { user, loading: authLoading } = useAuth();
     const [activeTab, setActiveTab] = useState<Tab>('general');
     const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
+    const [isCommitting, setIsCommitting] = useState(false);
+
+    // Form state
+    const [formData, setFormData] = useState({
+        username: '',
+        bio: '',
+        portfolio_url: '',
+        twitter_handle: ''
+    });
+
+    useEffect(() => {
+        if (user) {
+            setFormData({
+                username: user.username || '',
+                bio: user.bio || '',
+                portfolio_url: user.portfolio_url || '',
+                twitter_handle: user.twitter_handle || ''
+            });
+        }
+    }, [user]);
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleCommit = async () => {
+        setIsCommitting(true);
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5050'}/api/user/profile`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+                credentials: 'include',
+            });
+
+            if (response.ok) {
+                const updatedUser = await response.json();
+                console.log('Profile updated successfully');
+                // You might want to show a toast or redirect
+                window.location.href = '/profile';
+            } else {
+                console.error('Failed to update profile');
+            }
+        } catch (err) {
+            console.error('Error updating profile:', err);
+        } finally {
+            setIsCommitting(false);
+        }
+    };
+
+    if (authLoading) {
+        return (
+            <main className="min-h-screen bg-[#060606] text-[#EDEDED] flex items-center justify-center font-clash">
+                <div className="w-12 h-12 border-2 border-[#D3E97A] border-t-transparent rounded-full animate-spin"></div>
+            </main>
+        );
+    }
+
+    if (!user) {
+        return (
+            <main className="min-h-screen bg-[#060606] text-[#EDEDED] font-clash flex flex-col">
+                <Navbar />
+                <div className="flex-1 flex flex-col items-center justify-center gap-6 px-8 text-center">
+                    <h1 className="text-4xl font-technor font-bold uppercase">Signal Lost</h1>
+                    <p className="text-zinc-500 max-w-sm">Unauthorized access detected. Please synchronize with GitHub to view this sector.</p>
+                    <Link href="/">
+                        <button className="px-8 py-3 bg-[#D3E97A] text-black font-bold uppercase tracking-widest text-xs hover:scale-105 transition-transform rounded-full">
+                            Return to Base
+                        </button>
+                    </Link>
+                </div>
+                <Footer />
+            </main>
+        );
+    }
 
     const renderTabContent = () => {
         switch (activeTab) {
@@ -21,9 +101,9 @@ export default function EditProfilePage() {
                         {/* Avatar Section */}
                         <div className="flex flex-col md:flex-row items-center gap-8 p-8 border border-white/5 bg-[#0A0A0A] rounded-2xl">
                             <div className="relative">
-                                <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-[#D3E97A]/20">
+                                <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-[#D3E97A]/20 bg-white/5">
                                     <img
-                                        src="https://github.com/Yugabharathi21.png"
+                                        src={user.avatar_url || "https://github.com/placeholder.png"}
                                         alt="Current Avatar"
                                         className="w-full h-full object-cover"
                                     />
@@ -54,7 +134,9 @@ export default function EditProfilePage() {
                                 <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest ml-1">Display Name</label>
                                 <input
                                     type="text"
-                                    defaultValue="YUGABHARATHI"
+                                    name="username"
+                                    value={formData.username}
+                                    onChange={handleInputChange}
                                     className="w-full bg-white/5 border border-white/10 p-4 text-white placeholder:text-zinc-700 focus:border-[#D3E97A] outline-none transition-all uppercase font-technor font-medium"
                                 />
                             </div>
@@ -62,11 +144,14 @@ export default function EditProfilePage() {
                             <div className="space-y-3">
                                 <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest ml-1">Short Bio</label>
                                 <textarea
-                                    defaultValue="The AI-powered bug bounty platform for open source. Building the future of code."
+                                    name="bio"
+                                    value={formData.bio}
+                                    onChange={handleInputChange}
                                     rows={3}
+                                    placeholder="Add a bio..."
                                     className="w-full bg-white/5 border border-white/10 p-4 text-white placeholder:text-zinc-700 focus:border-[#D3E97A] outline-none transition-all resize-none font-clash"
                                 />
-                                <p className="text-[10px] text-zinc-600 text-right uppercase tracking-widest">140 Characters Remaining</p>
+                                <p className="text-[10px] text-zinc-600 text-right uppercase tracking-widest">{140 - formData.bio.length} Characters Remaining</p>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -77,8 +162,11 @@ export default function EditProfilePage() {
                                     </label>
                                     <input
                                         type="url"
+                                        name="portfolio_url"
+                                        value={formData.portfolio_url}
+                                        onChange={handleInputChange}
                                         placeholder="https://yourportfolio.com"
-                                        className="w-full bg-white/5 border border-white/10 p-4 text-white placeholder:text-zinc-700 focus:border-[#D3E97A] outline-none transition-all lowercase font-clash"
+                                        className="w-full bg-white/5 border border-white/10 p-4 text-white placeholder:text-zinc-700 focus:border-[#D3E97A] outline-none transition-all font-clash"
                                     />
                                 </div>
                                 <div className="space-y-3">
@@ -90,6 +178,9 @@ export default function EditProfilePage() {
                                         <span className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600 font-bold">@</span>
                                         <input
                                             type="text"
+                                            name="twitter_handle"
+                                            value={formData.twitter_handle}
+                                            onChange={handleInputChange}
                                             placeholder="username"
                                             className="w-full bg-white/5 border border-white/10 p-4 pl-10 text-white placeholder:text-zinc-700 focus:border-[#D3E97A] outline-none transition-all font-clash"
                                         />
@@ -275,10 +366,11 @@ export default function EditProfilePage() {
                             {/* Action Buttons (Sticky at bottom maybe?) */}
                             <div className="mt-20 pt-10 border-t border-white/5 flex flex-wrap gap-6 uppercase">
                                 <button
-                                    type="submit"
-                                    className="px-12 py-5 bg-[#D3E97A] text-black font-bold tracking-[0.2em] text-[10px] hover:scale-105 transition-transform flex items-center gap-3 shadow-[0_10px_40px_rgba(211,233,122,0.2)]"
+                                    onClick={handleCommit}
+                                    disabled={isCommitting}
+                                    className="px-12 py-5 bg-[#D3E97A] text-black font-bold tracking-[0.2em] text-[10px] hover:scale-105 transition-transform flex items-center gap-3 shadow-[0_10px_40px_rgba(211,233,122,0.2)] disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
-                                    Commit Changes
+                                    {isCommitting ? 'COMMITTING.SYS...' : 'Commit Changes'}
                                     <div className="w-1.5 h-1.5 bg-black rounded-full"></div>
                                 </button>
                                 <Link

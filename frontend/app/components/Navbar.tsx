@@ -1,3 +1,6 @@
+'use client';
+
+import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 
 const Navbar = () => {
@@ -18,9 +21,6 @@ const Navbar = () => {
         </Link>
         <Link href="/leaderboard" className="hover:text-white transition-colors cursor-pointer relative group">
           <span className="group-hover:text-[#D3E97A] transition-colors">Leaderboard</span>
-        </Link>
-        <Link href="/profile" className="hover:text-white transition-colors cursor-pointer relative group">
-          <span className="group-hover:text-[#D3E97A] transition-colors">Profile</span>
         </Link>
       </div>
 

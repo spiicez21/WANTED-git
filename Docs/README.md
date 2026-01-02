@@ -64,13 +64,14 @@
 To use GitHub Login, you need to create a [GitHub OAuth App](https://github.com/settings/developers).
 
 1.  **Set Homepage URL** to `http://localhost:3001` (or your frontend URL).
-2.  **Set Authorization callback URL** to `http://localhost:3000/auth/github/callback`.
+2.  **Set Authorization callback URL** to `http://localhost:5050/auth/github/callback`.
 3.  **Update `.env` in `Backend/`**:
     ```env
+    PORT=5050
     GITHUB_CLIENT_ID=your_id
     GITHUB_CLIENT_SECRET=your_secret
-    GITHUB_CALLBACK_URL=http://localhost:3000/auth/github/callback
-    FRONTEND_URL=http://localhost:3001
+    GITHUB_CALLBACK_URL=http://localhost:5050/auth/github/callback
+    FRONTEND_URL=http://localhost:3000
     SESSION_SECRET=a_random_string
     ```
 

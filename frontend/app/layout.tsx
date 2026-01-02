@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: "AI-Powered Issue Discovery & Crowdfunded Micro-Bounties",
 };
 
+import { Providers } from "./providers";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -16,7 +18,9 @@ export default function RootLayout({
       <body
         className="antialiased"
       >
-        {children}
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );

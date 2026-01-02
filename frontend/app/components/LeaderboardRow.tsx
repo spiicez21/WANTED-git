@@ -7,7 +7,10 @@ import Link from 'next/link';
 interface LeaderboardRowProps {
     rank: number;
     username: string;
-    avatar: string;
+    avatar_url?: string | null;
+    bio?: string | null;
+    portfolio_url?: string | null;
+    twitter_handle?: string | null;
     level: number;
     xp: number;
     cr: number;
@@ -21,7 +24,10 @@ interface LeaderboardRowProps {
 const LeaderboardRow: React.FC<LeaderboardRowProps> = ({
     rank,
     username,
-    avatar,
+    avatar_url,
+    bio,
+    portfolio_url,
+    twitter_handle,
     level,
     xp,
     cr,
@@ -68,7 +74,7 @@ const LeaderboardRow: React.FC<LeaderboardRowProps> = ({
                     <div className={`w-12 h-12 rounded-full overflow-hidden border-2 
                         ${rank === 1 || isCurrentUser ? 'border-[#D3E97A]' : 'border-white/10'}
                     `}>
-                        <img src={avatar} alt={username} className="w-full h-full object-cover" />
+                        <img src={avatar_url || "/placeholder-avatar.png"} alt={username} className="w-full h-full object-cover" />
                     </div>
                     <div>
                         <div className="text-white font-medium group-hover:text-[#D3E97A] transition-colors flex items-center gap-2">
@@ -110,19 +116,23 @@ const LeaderboardRow: React.FC<LeaderboardRowProps> = ({
                             <div>
                                 <h4 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-3">Protocol Bio</h4>
                                 <p className="text-xs text-zinc-400 leading-relaxed font-clash italic">
-                                    "Dedicated open-source hunter specializing in high-impact security patches and architectural optimizations. Building the future index of code."
+                                    {bio || `"Dedicated specialist building the future of code. Pulse synchronized with global bounty streams."`}
                                 </p>
                             </div>
                             <div className="flex gap-4">
-                                <Link href="#" className="p-2 border border-white/5 hover:border-[#D3E97A]/50 transition-all rounded-lg text-zinc-600 hover:text-white">
+                                <Link href={`https://github.com/${username}`} target="_blank" className="p-2 border border-white/5 hover:border-[#D3E97A]/50 transition-all rounded-lg text-zinc-600 hover:text-white">
                                     <Github className="w-4 h-4" />
                                 </Link>
-                                <Link href="#" className="p-2 border border-white/5 hover:border-[#D3E97A]/50 transition-all rounded-lg text-zinc-600 hover:text-white">
-                                    <Twitter className="w-4 h-4" />
-                                </Link>
-                                <Link href="#" className="p-2 border border-white/5 hover:border-[#D3E97A]/50 transition-all rounded-lg text-zinc-600 hover:text-white">
-                                    <ExternalLink className="w-4 h-4" />
-                                </Link>
+                                {twitter_handle && (
+                                    <Link href={`https://twitter.com/${twitter_handle}`} target="_blank" className="p-2 border border-white/5 hover:border-[#D3E97A]/50 transition-all rounded-lg text-zinc-600 hover:text-white">
+                                        <Twitter className="w-4 h-4" />
+                                    </Link>
+                                )}
+                                {portfolio_url && (
+                                    <Link href={portfolio_url} target="_blank" className="p-2 border border-white/5 hover:border-[#D3E97A]/50 transition-all rounded-lg text-zinc-600 hover:text-white">
+                                        <ExternalLink className="w-4 h-4" />
+                                    </Link>
+                                )}
                             </div>
                         </div>
 
