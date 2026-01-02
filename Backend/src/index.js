@@ -6,8 +6,12 @@ require('dotenv').config();
 
 const ingestionRoutes = require('./routes/ingestion');
 const apiRoutes = require('./routes/api');
+const authRoutes = require('./routes/auth');
 const db = require('./config/db');
 const { createTables } = require('./models/init');
+const passport = require('./config/passport');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -17,12 +21,29 @@ createTables();
 
 // Middleware
 app.use(helmet());
-app.use(cors());
+app.use(cors({
+    origin: process.env.FRONTEND_URL || 'http://localhost:3001',
+    credentials: true
+}));
 app.use(express.json()); // For parsing application/json
 app.use(express.urlencoded({ extended: true })); // For parsing application/x-www-form-urlencoded
 app.use(morgan('dev'));
+app.use(cookieParser());
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'keyboard cat',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: process.env.NODE_ENV === 'production',
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    }
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Routes
+app.use('/auth', authRoutes);
 app.use('/ingest', ingestionRoutes);
 app.use('/api', apiRoutes);
 

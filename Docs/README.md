@@ -59,6 +59,37 @@
 4.  **Open your browser**
     Navigate to `http://localhost:3000` to see the application.
 
+## 🔐 Authentication Setup
+
+To use GitHub Login, you need to create a [GitHub OAuth App](https://github.com/settings/developers).
+
+1.  **Set Homepage URL** to `http://localhost:3001` (or your frontend URL).
+2.  **Set Authorization callback URL** to `http://localhost:3000/auth/github/callback`.
+3.  **Update `.env` in `Backend/`**:
+    ```env
+    GITHUB_CLIENT_ID=your_id
+    GITHUB_CLIENT_SECRET=your_secret
+    GITHUB_CALLBACK_URL=http://localhost:3000/auth/github/callback
+    FRONTEND_URL=http://localhost:3001
+    SESSION_SECRET=a_random_string
+    ```
+
+## 🛠️ API Endpoints
+
+### Authentication
+- `GET /auth/github`: Initiate GitHub login.
+- `GET /auth/github/callback`: GitHub callback endpoint.
+- `GET /auth/me`: Get current authenticated user session.
+- `GET /auth/logout`: Log out.
+
+### GitHub REST API
+- `GET /api/github/repos`: Fetch authenticated user's repositories.
+- `GET /api/github/issues/:owner/:repo`: Fetch open issues for a specific repository.
+
+### Internal Data
+- `GET /api/issues`: List all tracked issues.
+- `GET /api/bounties`: List all active bounties.
+
 ## 📂 Project Structure
 
 ```
