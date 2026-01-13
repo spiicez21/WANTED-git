@@ -36,6 +36,15 @@ const createTables = async () => {
                 currency VARCHAR(10) DEFAULT 'USD',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
+
+            CREATE TABLE IF NOT EXISTS claims (
+                id SERIAL PRIMARY KEY,
+                issue_id INTEGER REFERENCES issues(id),
+                user_id INTEGER REFERENCES users(id),
+                status VARCHAR(50) DEFAULT 'IN_PROGRESS',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                UNIQUE(issue_id, user_id)
+            );
         `;
 
         await db.query(queryText);
@@ -50,7 +59,10 @@ const createTables = async () => {
             'ALTER TABLE users ADD COLUMN IF NOT EXISTS wallet_balance DECIMAL(10, 2) DEFAULT 0.00',
             'ALTER TABLE users ADD COLUMN IF NOT EXISTS bio TEXT',
             'ALTER TABLE users ADD COLUMN IF NOT EXISTS portfolio_url TEXT',
-            'ALTER TABLE users ADD COLUMN IF NOT EXISTS twitter_handle TEXT'
+            'ALTER TABLE users ADD COLUMN IF NOT EXISTS twitter_handle TEXT',
+            'ALTER TABLE issues ADD COLUMN IF NOT EXISTS xp_reward INTEGER DEFAULT 0',
+            'ALTER TABLE issues ADD COLUMN IF NOT EXISTS tags TEXT[]',
+            'ALTER TABLE issues ADD COLUMN IF NOT EXISTS html_url TEXT'
         ];
 
         for (const query of alterQueries) {

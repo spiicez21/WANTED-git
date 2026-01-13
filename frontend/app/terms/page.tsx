@@ -56,8 +56,15 @@ export default function TermsPage() {
                             </p>
                         </section>
 
+                        <section>
+                            <h2 className="text-xl font-technor font-bold text-white mb-4 uppercase tracking-wider">7. Data Availability & GitHub Affiliation</h2>
+                            <p>
+                                WANTED.git is an independent platform and is not affiliated with, endorsed by, or sponsored by GitHub, Inc. We utilize public GitHub APIs to access public repository data in accordance with GitHub's Terms of Service. We do not access private repositories or user data without explicit permission via our GitHub App installation.
+                            </p>
+                        </section>
+
                         <div className="pt-12 border-t border-white/5 text-xs text-zinc-600">
-                            Last Updated: December 25, 2025
+                            Last Updated: January 13, 2026
                         </div>
                     </div>
                 </div>

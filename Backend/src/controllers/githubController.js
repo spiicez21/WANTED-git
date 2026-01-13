@@ -85,23 +85,23 @@ exports.getContributions = async (req, res) => {
     }
 
     const query = `
-        query($userName:String!) {
-            user(login: $userName) {
-                contributionsCollection {
-                    contributionCalendar {
-                        totalContributions
-                        weeks {
-                            contributionDays {
-                                contributionCount
-                                date
-                                color
+            query($userName:String!) {
+                user(login: $userName) {
+                    contributionsCollection {
+                        contributionCalendar {
+                            totalContributions
+                            weeks {
+                                contributionDays {
+                                    contributionCount
+                                    date
+                                    color
+                                }
                             }
                         }
                     }
                 }
             }
-        }
-    `;
+        `;
 
     const username = req.query.username || req.user.username;
 
@@ -129,5 +129,119 @@ exports.getContributions = async (req, res) => {
     } catch (err) {
         console.error('Error fetching contributions:', err.message);
         res.status(500).json({ error: 'Failed to fetch contribution data' });
+    }
+};
+
+exports.fetchTopPublicIssues = async (req, res) => {
+    // Dynamic parameters
+    const minStars = req.query.min_stars || 10000;
+    const language = req.query.language;
+    const limit = req.query.limit || 30;
+
+    // Simple cache key based on params
+    const cacheKey = `topIssues_${minStars}_${language || 'all'}_${limit}`;
+    const now = Date.now();
+
+    if (global.issueCache && global.issueCache[cacheKey] && now - global.issueCache[cacheKey].timestamp < 300000) {
+        // Return cached result (valid for 5 mins)
+        console.log('Serving top issues from cache');
+        return res.json(global.issueCache[cacheKey].data);
+    }
+
+
+    // Construct search query
+    let q = `is:issue is:open stars:>${minStars} no:assignee`;
+    if (language) {
+        q += ` language:${language}`;
+    }
+
+    try {
+        // We use the search API for this
+        const response = await axios.get('https://api.github.com/search/issues', {
+            headers: {
+                // Use token if available to get higher rate limits, otherwise public access
+                ...(req.user && req.user.access_token && { 'Authorization': `Bearer ${req.user.access_token}` }),
+                'Accept': 'application/vnd.github.v3+json'
+            },
+            params: {
+                q: q,
+                sort: 'created',
+                order: 'desc',
+                per_page: limit
+            }
+        });
+
+        const issues = response.data.items.map(issue => ({
+            id: issue.id,
+            number: issue.number,
+            title: issue.title,
+            html_url: issue.html_url,
+            repository_url: issue.repository_url, // URL to fetch repo details if needed
+            state: issue.state,
+            created_at: issue.created_at,
+            user: {
+                login: issue.user.login,
+                avatar_url: issue.user.avatar_url
+            },
+            labels: issue.labels.map(l => ({ name: l.name, color: l.color })),
+            comments: issue.comments,
+            // Extract repo name from URL for display (e.g., "facebook/react")
+            repo_name: issue.repository_url.split('/').slice(-2).join('/')
+        }));
+
+        const responseData = {
+            count: response.data.total_count,
+            issues: issues
+        };
+
+        // Save to cache
+        if (!global.issueCache) global.issueCache = {};
+        global.issueCache[cacheKey] = {
+            timestamp: Date.now(),
+            data: responseData
+        };
+
+        res.json(responseData);
+    } catch (err) {
+        console.error('Error fetching top public issues:', err.response ? err.response.data : err.message);
+
+        // If rate limited, return mock data
+        if (err.response && (err.response.status === 403 || err.response.status === 429)) {
+            console.warn('GitHub API rate limited. returning mock data.');
+            const mockIssues = [
+                {
+                    id: 123456789,
+                    number: 4829,
+                    title: "[Mock] Fix hydration error in Suspense boundaries",
+                    html_url: "https://github.com/facebook/react/issues/123",
+                    repository_url: "https://api.github.com/repos/facebook/react",
+                    state: "open",
+                    created_at: new Date().toISOString(),
+                    user: { login: "gaearon", avatar_url: "https://github.com/gaearon.png" },
+                    labels: [{ name: "Bug", color: "d73a4a" }, { name: "React 19", color: "63a4ff" }],
+                    comments: 42,
+                    repo_name: "facebook/react"
+                },
+                {
+                    id: 987654321,
+                    number: 1337,
+                    title: "[Mock] Improve image optimization",
+                    html_url: "https://github.com/vercel/next.js/issues/1337",
+                    repository_url: "https://api.github.com/repos/vercel/next.js",
+                    state: "open",
+                    created_at: new Date().toISOString(),
+                    user: { login: "vercel_bot", avatar_url: "https://github.com/vercel.png" },
+                    labels: [{ name: "Performance", color: "c5def5" }],
+                    comments: 12,
+                    repo_name: "vercel/next.js"
+                }
+            ];
+            return res.json({ count: 2, issues: mockIssues });
+        }
+
+        res.status(err.response ? err.response.status : 500).json({
+            error: 'Failed to fetch public issues',
+            details: err.response ? err.response.data : err.message
+        });
     }
 };
