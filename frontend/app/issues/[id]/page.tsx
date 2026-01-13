@@ -24,6 +24,7 @@ interface Issue {
     tags: string[];
     html_url: string;
     created_at: string;
+    hunters?: { username: string; avatar_url: string }[];
 }
 
 import { useAuth } from '../../../context/AuthContext';
@@ -193,12 +194,31 @@ export default function IssueDetailPage() {
                                             <h3 className="text-xs font-bold uppercase tracking-widest">Active Hunters</h3>
                                         </div>
                                         <div className="space-y-4">
-                                            <div className="p-4 bg-white/5 rounded-lg border border-white/5 text-center">
-                                                <p className="text-[10px] text-zinc-500 font-mono">No active hunters yet.</p>
-                                            </div>
-                                            <div className="pt-2 text-center">
-                                                <span className="text-[10px] font-bold text-zinc-700 uppercase tracking-widest">Be the first to claim!</span>
-                                            </div>
+                                            {issue.hunters && issue.hunters.length > 0 ? (
+                                                <div className="space-y-3">
+                                                    {issue.hunters.map((hunter, idx) => (
+                                                        <div key={idx} className="flex items-center gap-3 p-3 bg-white/5 rounded-lg border border-white/5">
+                                                            <img
+                                                                src={hunter.avatar_url || `https://github.com/${hunter.username}.png`}
+                                                                alt={hunter.username}
+                                                                className="w-8 h-8 rounded-full border border-white/10"
+                                                            />
+                                                            <div className="text-sm text-zinc-300 font-mono">
+                                                                {hunter.username}
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            ) : (
+                                                <div className="p-4 bg-white/5 rounded-lg border border-white/5 text-center">
+                                                    <p className="text-[10px] text-zinc-500 font-mono">No active hunters yet.</p>
+                                                </div>
+                                            )}
+                                            {(!issue.hunters || issue.hunters.length === 0) && (
+                                                <div className="pt-2 text-center">
+                                                    <span className="text-[10px] font-bold text-zinc-700 uppercase tracking-widest">Be the first to claim!</span>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -264,9 +284,11 @@ export default function IssueDetailPage() {
                                         <Github className="w-4 h-4" /> View on GitHub
                                     </button>
                                 </a>
-                                <button className="w-full py-4 border border-white/5 bg-white/[0.02] text-zinc-500 text-[10px] font-bold uppercase tracking-[0.2em] flex items-center justify-center gap-3 hover:bg-white/5 hover:text-white transition-all">
-                                    <MessageSquare className="w-4 h-4" /> Join Discussion
-                                </button>
+                                <a href={issue.html_url} target="_blank" rel="noopener noreferrer" className="block outline-none">
+                                    <button className="w-full py-4 border border-white/5 bg-white/[0.02] text-zinc-500 text-[10px] font-bold uppercase tracking-[0.2em] flex items-center justify-center gap-3 hover:bg-white/5 hover:text-white transition-all">
+                                        <MessageSquare className="w-4 h-4" /> Join Discussion
+                                    </button>
+                                </a>
                             </div>
 
                             {/* Metadata */}

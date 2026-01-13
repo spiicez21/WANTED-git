@@ -95,11 +95,24 @@ exports.getIssueById = async (req, res) => {
         return res.status(400).json({ error: 'Invalid Issue ID' });
     }
     try {
-        const { rows } = await db.query('SELECT * FROM issues WHERE id = $1', [id]);
-        if (rows.length === 0) {
+        const { rows: issueRows } = await db.query('SELECT * FROM issues WHERE id = $1', [id]);
+        if (issueRows.length === 0) {
             return res.status(404).json({ error: 'Issue not found' });
         }
-        res.status(200).json(rows[0]);
+
+        // Fetch active hunters (claimants)
+        const { rows: hunterRows } = await db.query(
+            `SELECT u.username, u.avatar_url 
+             FROM claims c 
+             JOIN users u ON c.user_id = u.id 
+             WHERE c.issue_id = $1 AND c.status IN ('IN_PROGRESS', 'UNDER_REVIEW')`,
+            [id]
+        );
+
+        const issue = issueRows[0];
+        issue.hunters = hunterRows; // Attach hunters to issue object
+
+        res.status(200).json(issue);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
