@@ -4,6 +4,7 @@ const userController = require('../controllers/userController');
 const githubController = require('../controllers/githubController');
 const claimsController = require('../controllers/claimsController');
 const problemController = require('../controllers/problemController');
+const activityController = require('../controllers/activityController');
 
 // User Routes
 router.get('/users', userController.getAllUsers);
@@ -27,5 +28,8 @@ router.get('/claims', claimsController.getMyClaims);
 // Problem Routes
 router.get('/problems', problemController.getAllProblems);
 router.get('/problems/:id', problemController.getProblemById);
+
+// Activity Routes
+router.get('/activity/heatmap', activityController.getActivityHeatmap);
 
 module.exports = router;

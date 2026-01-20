@@ -7,7 +7,7 @@ import Footer from "../components/Footer";
 import ProfileStats from "../components/ProfileStats";
 import ShareProfileModal from "../components/ShareProfileModal";
 import { useAuth } from '@/context/AuthContext';
-import ContributionHeatmap from '../components/ContributionHeatmap';
+import ArenaActivityHeatmap from '../components/ArenaActivityHeatmap';
 
 export default function ProfilePage() {
     const [isShareModalOpen, setIsShareModalOpen] = useState(false);
@@ -130,9 +130,9 @@ export default function ProfilePage() {
                     </div>
                 </div>
 
-                {/* Contribution Heatmap */}
+                {/* Arena Activity Heatmap */}
                 <div className="mb-16">
-                    <ContributionHeatmap username={user.username} />
+                    <ArenaActivityHeatmap userId={user.id} />
                 </div>
 
                 {/* Stats Grid */}
