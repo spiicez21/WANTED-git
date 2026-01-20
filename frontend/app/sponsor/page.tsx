@@ -9,7 +9,7 @@ import Link from 'next/link';
 export default function SponsorPage() {
     const tiers = [
         {
-            name: "Individual",
+            name: "Drifter",
             price: "$10/mo",
             icon: <Heart className="w-8 h-8 text-pink-500" />,
             benefits: [
@@ -22,7 +22,7 @@ export default function SponsorPage() {
             textColor: "text-pink-500"
         },
         {
-            name: "Startup",
+            name: "Baron",
             price: "$250/mo",
             icon: <Rocket className="w-8 h-8 text-[#D3E97A]" />,
             benefits: [
@@ -37,7 +37,7 @@ export default function SponsorPage() {
             featured: true
         },
         {
-            name: "Enterprise",
+            name: "Governor",
             price: "Custom",
             icon: <Building2 className="w-8 h-8 text-blue-500" />,
             benefits: [

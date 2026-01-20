@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from "next/link";
+import { Zap, Trophy } from 'lucide-react';
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
@@ -19,27 +20,102 @@ export default function RulesPage() {
                         </p>
                     </div>
 
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                        <div className="p-8 border border-white/5 bg-[#0A0A0A] rounded-2xl">
+                            <div className="w-12 h-12 bg-[#D3E97A] rounded-lg flex items-center justify-center mb-6 text-black">
+                                <Zap size={24} />
+                            </div>
+                            <h3 className="text-2xl font-technor font-bold text-white mb-4">Solo Mode</h3>
+                            <p className="text-zinc-400 text-sm leading-relaxed mb-6">
+                                The lone ranger's path. Focus on self-improvement and precision.
+                            </p>
+                            <ul className="space-y-3 text-xs text-zinc-500">
+                                <li className="flex items-center gap-2">
+                                    <div className="w-1 h-1 bg-[#D3E97A] rounded-full"></div>
+                                    Standard XP rewards based on completion
+                                </li>
+                                <li className="flex items-center gap-2">
+                                    <div className="w-1 h-1 bg-[#D3E97A] rounded-full"></div>
+                                    No Rank Point (Elo) penalty for failure
+                                </li>
+                                <li className="flex items-center gap-2">
+                                    <div className="w-1 h-1 bg-[#D3E97A] rounded-full"></div>
+                                    Best for practicing new languages or stacks
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div className="p-8 border border-[#D3E97A]/20 bg-[#D3E97A]/5 rounded-2xl">
+                            <div className="w-12 h-12 bg-[#D3E97A] rounded-lg flex items-center justify-center mb-6 text-black">
+                                <Trophy size={24} />
+                            </div>
+                            <h3 className="text-2xl font-technor font-bold text-white mb-4">Duel Mode</h3>
+                            <p className="text-zinc-400 text-sm leading-relaxed mb-6">
+                                High-stakes showdowns. Real-time head-to-head combat.
+                            </p>
+                            <ul className="space-y-3 text-xs text-zinc-500 text-zinc-400">
+                                <li className="flex items-center gap-2">
+                                    <div className="w-1 h-1 bg-[#D3E97A] rounded-full"></div>
+                                    1.5x XP Multiplier for the winner
+                                </li>
+                                <li className="flex items-center gap-2 text-white">
+                                    <div className="w-1 h-1 bg-[#D3E97A] rounded-full"></div>
+                                    Win/Loss affects your Arena Elo (Rank)
+                                </li>
+                                <li className="flex items-center gap-2">
+                                    <div className="w-1 h-1 bg-[#D3E97A] rounded-full"></div>
+                                    Matchmaking pairs you with similar skill levels
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    {/* Rank System */}
+                    <div className="mb-20">
+                        <h2 className="text-3xl font-technor font-bold text-white mb-8">Rank Progression</h2>
+                        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                            {[
+                                { name: 'Rookie', range: '0 - 500 XP' },
+                                { name: 'Gunslinger', range: '501 - 1500 XP' },
+                                { name: 'Outlaw', range: '1501 - 3000 XP' },
+                                { name: 'Sheriff', range: '3001 - 6000 XP' },
+                                { name: 'Legend', range: '6000+ XP' }
+                            ].map((rank, i) => (
+                                <div key={i} className="p-6 border border-white/5 bg-[#0A0A0A] rounded-xl text-center">
+                                    <div className="text-[10px] text-zinc-600 uppercase mb-2">Stage 0{i + 1}</div>
+                                    <div className="text-white font-bold mb-1">{rank.name}</div>
+                                    <div className="text-[10px] text-[#D3E97A] font-mono">{rank.range}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
+                        {/* Original XP/CR stuff but more detailed */}
                         <div className="p-8 border border-white/5 bg-[#0A0A0A] rounded-2xl">
                             <div className="w-12 h-12 bg-[#D3E97A] rounded-lg flex items-center justify-center mb-6">
                                 <span className="text-black font-bold text-xl">XP</span>
                             </div>
                             <h3 className="text-2xl font-technor font-bold text-white mb-4">Experience Points</h3>
                             <p className="text-zinc-400 text-sm leading-relaxed mb-6">
-                                XP represents your skill and contribution level. It is earned by solving coding challenges, winning duels, and participating in the arena.
+                                XP is calculated based on a weighted formula including difficulty and performance.
                             </p>
+                            <div className="p-4 bg-white/5 rounded-xl border border-white/5 mb-6">
+                                <div className="text-[10px] text-zinc-500 uppercase mb-1">XP Formula</div>
+                                <div className="text-sm font-mono text-white">XP = (Base * Difficulty) + Bonus</div>
+                            </div>
                             <ul className="space-y-3 text-xs text-zinc-500">
                                 <li className="flex items-center gap-2">
                                     <div className="w-1 h-1 bg-[#D3E97A] rounded-full"></div>
-                                    Dynamic rewards based on challenge difficulty
+                                    <strong>60% Correctness:</strong> Passing all test cases
                                 </li>
                                 <li className="flex items-center gap-2">
                                     <div className="w-1 h-1 bg-[#D3E97A] rounded-full"></div>
-                                    Higher difficulty = Greater XP rewards
+                                    <strong>25% Efficiency:</strong> Execution time & memory usage
                                 </li>
                                 <li className="flex items-center gap-2">
                                     <div className="w-1 h-1 bg-[#D3E97A] rounded-full"></div>
-                                    Bonus XP for "First Responders"
+                                    <strong>15% Speed:</strong> Time elapsed since challenge start
                                 </li>
                             </ul>
                         </div>

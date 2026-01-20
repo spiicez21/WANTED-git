@@ -46,16 +46,16 @@ export default function LearnPage() {
                     <section className="mb-24">
                         <div className="flex items-center gap-4 mb-8 border-b border-white/10 pb-4">
                             <Share2 className="text-[#D3E97A]" size={32} />
-                            <h2 className="text-3xl font-bold text-white">The Open Source Philosophy</h2>
+                            <h2 className="text-3xl font-bold text-white">The Duelist Creed</h2>
                         </div>
 
                         <div className="grid md:grid-cols-2 gap-12">
                             <div className="space-y-6 text-zinc-400 leading-relaxed font-light">
                                 <p>
-                                    <strong className="text-white font-medium">Open Source Software (OSS)</strong> is more than just code; it's a paradigm shift in how technology is created. Unlike proprietary software, where code is a guarded secret, OSS makes source code available to everyone.
+                                    <strong className="text-white font-medium">Competitive Coding</strong> is the ultimate frontier of software engineering. It's not just about solving a problem; it's about solving it faster, cleaner, and more efficiently than anyone else.
                                 </p>
                                 <p>
-                                    This transparency fosters a global community of developers who collaborate to fix bugs, add features, and improve security. When you contribute to open source, you aren't just writing code—you're building your reputation, learning from peers, and shaping the tools that power the modern world.
+                                    In the WANTED.git arena, we value transparency, meritocracy, and raw skill. Whether you are practicing in Solo mode or staking your reputation in a Duel, you are part of a global elite pushing the boundaries of what code can achieve. This isn't just a platform—it's your legacy.
                                 </p>
                             </div>
                             <div className="bg-[#111] p-8 rounded-2xl border border-white/5">
@@ -65,10 +65,10 @@ export default function LearnPage() {
                                 </h3>
                                 <ul className="space-y-4">
                                     {[
-                                        { title: "Transparency", desc: "Audit code for security and functionality." },
-                                        { title: "Collaboration", desc: "Solve problems with diverse perspectives." },
-                                        { title: "Meritocracy", desc: "Code speaks louder than titles or credentials." },
-                                        { title: "Innovation", desc: "Rapid iteration through community feedback." }
+                                        { title: "Precision", desc: "Pass 100% of test cases under pressure." },
+                                        { title: "Speed", desc: "Outpace your opponents in real-time showdowns." },
+                                        { title: "Efficiency", desc: "Optimize memory and execution time." },
+                                        { title: "Reputation", desc: "Climb the ranks and earn your legendary badge." }
                                     ].map((item, idx) => (
                                         <li key={idx} className="flex gap-4">
                                             <div className="w-1.5 h-1.5 rounded-full bg-zinc-600 mt-2.5 shrink-0"></div>
@@ -87,11 +87,11 @@ export default function LearnPage() {
                     <section className="mb-24">
                         <div className="flex items-center gap-4 mb-8 border-b border-white/10 pb-4">
                             <Terminal className="text-[#D3E97A]" size={32} />
-                            <h2 className="text-3xl font-bold text-white">Git Version Control</h2>
+                            <h2 className="text-3xl font-bold text-white">The Duelist's Tools</h2>
                         </div>
 
                         <p className="text-zinc-400 mb-8 max-w-3xl">
-                            Git is the industry-standard version control system. It tracks changes in your files, allowing you to coordinate work on those files among multiple people.
+                            While the arena provides a built-in editor, elite gunslingers often maintain their own local arsenal using Git. Here is how you manage your code history.
                         </p>
 
                         <div className="space-y-8">
