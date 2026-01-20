@@ -81,8 +81,15 @@ export default function RulesPage() {
                                 { name: 'Sheriff', range: '3001 - 6000 XP' },
                                 { name: 'Legend', range: '6000+ XP' }
                             ].map((rank, i) => (
-                                <div key={i} className="p-6 border border-white/5 bg-[#0A0A0A] rounded-xl text-center">
-                                    <div className="text-[10px] text-zinc-600 uppercase mb-2">Stage 0{i + 1}</div>
+                                <div key={i} className="p-6 border border-white/5 bg-[#0A0A0A] rounded-xl text-center hover:border-[#D3E97A]/20 transition-colors group">
+                                    <div className="text-[10px] text-zinc-600 uppercase mb-4">Stage 0{i + 1}</div>
+                                    <div className="w-16 h-16 mx-auto mb-4 bg-white/5 rounded-full p-3 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                        <img
+                                            src={`/ranks/${rank.name.toLowerCase()}.svg`}
+                                            alt={rank.name}
+                                            className="w-full h-full object-contain"
+                                        />
+                                    </div>
                                     <div className="text-white font-bold mb-1">{rank.name}</div>
                                     <div className="text-[10px] text-[#D3E97A] font-mono">{rank.range}</div>
                                 </div>

@@ -94,7 +94,7 @@ export default function SoloMode() {
                 {/* Left Panel: Problem Selection & Description */}
                 <div className="w-full lg:w-1/3 border-r border-white/5 overflow-y-auto p-8">
                     <div className="flex items-center gap-2 text-accent text-xs font-bold uppercase tracking-widest mb-4">
-                        <Trophy className="w-4 h-4" />
+                        <img src={`/ranks/${(user?.rank || 'rookie').toLowerCase()}.svg`} className="w-6 h-6" />
                         Solo Bounty Hunt
                     </div>
 

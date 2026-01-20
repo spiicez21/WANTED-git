@@ -21,6 +21,14 @@ interface LeaderboardRowProps {
     isCurrentUser?: boolean;
 }
 
+const getRank = (xp: number) => {
+    if (xp >= 6000) return 'legend';
+    if (xp >= 3001) return 'sheriff';
+    if (xp >= 1501) return 'outlaw';
+    if (xp >= 501) return 'gunslinger';
+    return 'rookie';
+};
+
 const LeaderboardRow: React.FC<LeaderboardRowProps> = ({
     rank,
     username,
@@ -63,8 +71,8 @@ const LeaderboardRow: React.FC<LeaderboardRowProps> = ({
                 {/* Rank Icon Column */}
                 <div className="w-20 flex justify-center">
                     <img
-                        src="/Ranks Icon/Specialist.svg"
-                        alt="Specialist"
+                        src={`/ranks/${getRank(xp)}.svg`}
+                        alt={getRank(xp)}
                         className="w-12 h-12 drop-shadow-[0_0_10px_rgba(211,233,122,0.15)] group-hover:scale-110 transition-transform duration-500"
                     />
                 </div>

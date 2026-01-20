@@ -135,6 +135,7 @@ export default function DuelMode() {
                     <div className="h-20 border-b border-white/5 bg-black/40 px-8 flex items-center justify-between">
                         <div className="flex items-center gap-4">
                             <div className="flex items-center gap-3">
+                                <img src={`/ranks/${(user?.rank || 'Rookie').toLowerCase()}.svg`} className="w-8 h-8" />
                                 <img src={user?.avatar_url || ''} className="w-10 h-10 rounded-full border-2 border-accent" />
                                 <div>
                                     <div className="text-xs font-bold">{user?.username}</div>
@@ -148,6 +149,7 @@ export default function DuelMode() {
                                     <div className="text-[10px] text-zinc-500 uppercase">{opponent?.rank}</div>
                                 </div>
                                 <img src={opponent?.avatar_url || ''} className="w-10 h-10 rounded-full border-2 border-western-orange" />
+                                <img src={`/ranks/${(opponent?.rank || 'Rookie').toLowerCase()}.svg`} className="w-8 h-8" />
                             </div>
                         </div>
 
