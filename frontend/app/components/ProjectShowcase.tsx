@@ -125,8 +125,12 @@ const ProjectShowcase = () => {
                             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                                 {['Rookie', 'Gunslinger', 'Outlaw', 'Sheriff', 'Legend'].map((rank, i) => (
                                     <div key={rank} className={`p-10 border ${i === 4 ? 'border-western-gold text-western-gold' : 'border-white/10 text-zinc-400'} text-center flex flex-col items-center justify-center gap-6 transition-all hover:border-western-gold/50 bg-gradient-to-b from-transparent to-white/[0.01]`}>
-                                        <div className="w-20 h-20 md:w-28 md:h-28 opacity-90 group-hover:opacity-100 transition-all duration-500 transform group-hover:scale-110 flex items-center justify-center bg-white/5 rounded-full">
-                                            <Trophy className={`w-12 h-12 ${i === 4 ? 'text-western-gold' : 'text-zinc-500'}`} />
+                                        <div className="w-20 h-20 md:w-28 md:h-28 opacity-90 group-hover:opacity-100 transition-all duration-500 transform group-hover:scale-110 flex items-center justify-center bg-white/5 rounded-full p-4">
+                                            <img
+                                                src={`/ranks/${rank.toLowerCase()}.svg`}
+                                                alt={rank}
+                                                className="w-full h-full object-contain"
+                                            />
                                         </div>
                                         <div>
                                             <div className="text-xs uppercase opacity-40 mb-2 tracking-[0.2em] font-mono">Tier 0{i + 1}</div>

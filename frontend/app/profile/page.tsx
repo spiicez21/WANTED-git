@@ -93,9 +93,9 @@ export default function ProfilePage() {
                                 <div className="flex items-center gap-5">
                                     <div className="w-20 h-20 md:w-24 md:h-24 relative flex items-center justify-center">
                                         <div className="absolute inset-0 bg-[#D3E97A]/10 rounded-full blur-xl"></div>
-                                        <img src={`/Ranks Icon/${user.rank || 'Rookie'}.svg`}
+                                        <img src={`/ranks/${(user.rank || 'Rookie').toLowerCase()}.svg`}
                                             onError={(e) => {
-                                                (e.target as HTMLImageElement).src = '/Ranks Icon/Specialist.svg';
+                                                (e.target as HTMLImageElement).src = '/ranks/outlaw.svg';
                                             }}
                                             alt={user.rank}
                                             className="relative w-16 h-16 md:w-20 md:h-20 drop-shadow-[0_0_15px_rgba(211,233,122,0.2)]" />
