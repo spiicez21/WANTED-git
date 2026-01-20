@@ -30,13 +30,34 @@
 :root {
   --background: #060606;
   --foreground: #ededed;
+  --accent: #D3E97A;
+  --western-orange: #f97316;
+  --western-gold: #fbbf24;
+  --western-brown: #451a03;
+  --western-red: #dc2626;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-western-orange: var(--western-orange);
+  --color-western-gold: var(--western-gold);
+  --color-western-brown: var(--western-brown);
+  --color-western-red: var(--western-red);
   --font-technor: 'Technor', sans-serif;
   --font-clash: 'ClashDisplay', sans-serif;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.western-border {
+  border: 1px solid var(--western-gold);
+  box-shadow: 0 0 15px rgba(251, 191, 36, 0.1);
 }
 
 body {

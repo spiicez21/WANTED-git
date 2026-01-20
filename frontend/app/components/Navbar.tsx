@@ -13,17 +13,17 @@ const Navbar = () => {
       </Link>
 
       <div className="hidden md:flex gap-12 text-sm font-medium text-zinc-400">
+        <Link href="/solo" className="hover:text-white transition-colors cursor-pointer relative group">
+          <span className="group-hover:text-accent transition-colors">Solo</span>
+        </Link>
+        <Link href="/duel" className="hover:text-white transition-colors cursor-pointer relative group">
+          <span className="group-hover:text-western-orange transition-colors">Duel</span>
+        </Link>
         <Link href="/issues" className="hover:text-white transition-colors cursor-pointer relative group">
-          <span className="group-hover:text-[#D3E97A] transition-colors">Issues</span>
-        </Link>
-        <Link href="/explore" className="hover:text-white transition-colors cursor-pointer relative group">
-          <span className="group-hover:text-[#D3E97A] transition-colors">Explore</span>
-        </Link>
-        <Link href="/claims" className="hover:text-white transition-colors cursor-pointer relative group">
-          <span className="group-hover:text-[#D3E97A] transition-colors">Claims</span>
+          <span className="group-hover:text-accent transition-colors">Issues</span>
         </Link>
         <Link href="/leaderboard" className="hover:text-white transition-colors cursor-pointer relative group">
-          <span className="group-hover:text-[#D3E97A] transition-colors">Leaderboard</span>
+          <span className="group-hover:text-accent transition-colors">Leaderboard</span>
         </Link>
       </div>
 

@@ -37,9 +37,9 @@ const LeaderboardRow: React.FC<LeaderboardRowProps> = ({
     isCurrentUser = false,
 }) => {
     const rankColors = {
-        1: 'text-[#D3E97A] border-[#D3E97A]/20 bg-[#D3E97A]/5',
+        1: 'text-western-gold border-western-gold/20 bg-western-gold/5',
         2: 'text-zinc-300 border-zinc-700 bg-zinc-800/20',
-        3: 'text-orange-400 border-orange-900 bg-orange-950/20',
+        3: 'text-western-orange border-western-orange/20 bg-western-orange/5',
     };
 
     return (

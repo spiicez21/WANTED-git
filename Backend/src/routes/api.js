@@ -5,6 +5,7 @@ const issueController = require('../controllers/issueController');
 const bountyController = require('../controllers/bountyController');
 const githubController = require('../controllers/githubController');
 const claimsController = require('../controllers/claimsController');
+const problemController = require('../controllers/problemController');
 
 // User Routes
 router.get('/users', userController.getAllUsers);
@@ -32,5 +33,9 @@ router.post('/bounties', bountyController.createBounty);
 // Claims Routes
 router.post('/claims', claimsController.createClaim);
 router.get('/claims', claimsController.getMyClaims);
+
+// Problem Routes
+router.get('/problems', problemController.getAllProblems);
+router.get('/problems/:id', problemController.getProblemById);
 
 module.exports = router;

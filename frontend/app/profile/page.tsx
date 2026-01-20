@@ -61,8 +61,8 @@ export default function ProfilePage() {
                                 </div>
                             )}
                         </div>
-                        <div className="absolute -bottom-2 -right-2 bg-[#D3E97A] text-black text-[10px] font-bold px-2 py-1 rounded-full uppercase">
-                            Beta
+                        <div className="absolute -bottom-2 -right-2 bg-western-gold text-black text-[10px] font-bold px-2 py-1 rounded-full uppercase">
+                            Legend
                         </div>
                     </div>
 
@@ -102,8 +102,8 @@ export default function ProfilePage() {
                                             className="relative w-16 h-16 md:w-20 md:h-20 drop-shadow-[0_0_15px_rgba(211,233,122,0.2)]" />
                                     </div>
                                     <div>
-                                        <span className="text-2xl font-bold uppercase tracking-[0.2em] text-[#D3E97A]">{user.rank || 'Rookie'}</span>
-                                        <div className="text-xs text-zinc-500 uppercase tracking-widest mt-2">Specialist ID #{user.github_id}</div>
+                                        <span className="text-2xl font-bold uppercase tracking-[0.2em] text-western-orange">{user.rank || 'Rookie'}</span>
+                                        <div className="text-xs text-zinc-500 uppercase tracking-widest mt-2">Bounty Hunter ID #{user.github_id}</div>
                                     </div>
                                 </div>
                                 <span className="text-xs text-zinc-500 uppercase tracking-wider font-mono">Level {Math.floor((user.xp || 0) / 1000) + 1} • {user.xp || 0} XP</span>
