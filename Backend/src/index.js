@@ -76,7 +76,13 @@ app.use('/auth', authRoutes);
 app.use('/ingest', ingestionRoutes);
 app.use('/api', apiRoutes);
 
+const http = require('http');
+const { initSocket } = require('./websocket/socket');
+
+const server = http.createServer(app);
+initSocket(server);
+
 // Start Server
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
