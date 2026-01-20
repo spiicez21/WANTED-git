@@ -5,7 +5,6 @@ import React, { useState } from 'react';
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ProfileStats from "../components/ProfileStats";
-import ClaimCard from "../components/ClaimCard";
 import ShareProfileModal from "../components/ShareProfileModal";
 import { useAuth } from '@/context/AuthContext';
 import ContributionHeatmap from '../components/ContributionHeatmap';
@@ -145,35 +144,23 @@ export default function ProfilePage() {
                     <ProfileStats />
                 </div>
 
-                {/* Recent Activity */}
+                {/* Recent Showdowns */}
                 <div>
                     <div className="flex justify-between items-end mb-8">
                         <h2 className="text-xs font-bold uppercase tracking-widest text-zinc-500 flex items-center gap-4 flex-1">
-                            Recent Activity
+                            Recent Showdowns
                             <div className="h-[1px] flex-1 bg-white/5"></div>
                         </h2>
                         <div className="flex gap-6 ml-8">
-                            <span className="text-xs font-bold uppercase tracking-wider text-[#D3E97A] cursor-pointer">Bounties</span>
-                            <span className="text-xs font-bold uppercase tracking-wider text-zinc-600 hover:text-white cursor-pointer transition-colors">Contributions</span>
+                            <span className="text-xs font-bold uppercase tracking-wider text-western-orange cursor-pointer">Duels</span>
+                            <span className="text-xs font-bold uppercase tracking-wider text-zinc-600 hover:text-white cursor-pointer transition-colors">Solo</span>
                         </div>
                     </div>
 
                     <div className="grid grid-cols-1 gap-4">
-                        {/* Reuse ClaimCard for consistency */}
-                        <ClaimCard
-                            repo="facebook/react"
-                            title="Fix hydration error in Suspense boundaries with server components"
-                            xp={5000}
-                            status="In Progress"
-                            dateClaimed="Dec 20, 2025"
-                        />
-                        <ClaimCard
-                            repo="vercel/next.js"
-                            title="Optimize image optimization API for better caching performance"
-                            xp={2500}
-                            status="Under Review"
-                            dateClaimed="Dec 18, 2025"
-                        />
+                        <div className="p-8 border border-white/5 bg-white/[0.02] text-center text-zinc-600 font-mono text-xs uppercase tracking-widest italic">
+                            No recent showdowns recorded in this frontier.
+                        </div>
                     </div>
                 </div>
             </div>

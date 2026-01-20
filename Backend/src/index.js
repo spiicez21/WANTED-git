@@ -4,7 +4,6 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 require('dotenv').config();
 
-const ingestionRoutes = require('./routes/ingestion');
 const apiRoutes = require('./routes/api');
 const authRoutes = require('./routes/auth');
 const db = require('./config/db');
@@ -73,7 +72,6 @@ app.get('/', (req, res) => {
 
 // Routes
 app.use('/auth', authRoutes);
-app.use('/ingest', ingestionRoutes);
 app.use('/api', apiRoutes);
 
 const http = require('http');

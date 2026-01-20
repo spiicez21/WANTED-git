@@ -46,14 +46,14 @@ const ProfileStats = ({ user: manualUser }: { user?: any }) => {
                 trend={{ value: `Level ${Math.floor((user.xp || 0) / 1000) + 1}`, positive: true }}
             />
             <StatCard
-                label="Claims Completed"
+                label="Duels Won"
                 value="0"
-                sublabel="Synced from GitHub"
+                sublabel="Victories in Showdowns"
             />
             <StatCard
-                label="Success Rate"
-                value="100%"
-                sublabel="PR Merge percentage"
+                label="Win Rate"
+                value="0%"
+                sublabel="Shooting accuracy"
             />
         </div>
     );

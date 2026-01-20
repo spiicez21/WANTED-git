@@ -34,10 +34,10 @@ export default function NotFound() {
                         EXTRACT TO HOME
                     </Link>
                     <Link
-                        href="/issues"
+                        href="/duel"
                         className="px-8 py-4 border border-white/10 text-white font-bold tracking-widest text-sm hover:bg-white/5 transition-colors"
                     >
-                        BROWSE BOUNTIES
+                        ENTER SHOWDOWN
                     </Link>
                 </div>
 

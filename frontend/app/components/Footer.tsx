@@ -17,7 +17,8 @@ const Footer = () => {
                 <div>
                     <h4 className="text-white font-medium mb-6">Platform</h4>
                     <ul className="space-y-4 text-sm text-zinc-500">
-                        <li><Link href="/issues" className="hover:text-[#D3E97A] transition-colors">Browse Issues</Link></li>
+                        <li><Link href="/solo" className="hover:text-[#D3E97A] transition-colors">Solo Mode</Link></li>
+                        <li><Link href="/duel" className="hover:text-[#D3E97A] transition-colors">Duel Mode</Link></li>
                         <li><Link href="/leaderboard" className="hover:text-[#D3E97A] transition-colors">Leaderboard</Link></li>
                         <li><Link href="/rules" className="hover:text-[#D3E97A] transition-colors">Platform Rules</Link></li>
                         <li><Link href="/learn" className="hover:text-[#D3E97A] transition-colors">Learn / Docs</Link></li>

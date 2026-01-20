@@ -26,12 +26,12 @@ export default function RulesPage() {
                             </div>
                             <h3 className="text-2xl font-technor font-bold text-white mb-4">Experience Points</h3>
                             <p className="text-zinc-400 text-sm leading-relaxed mb-6">
-                                XP represents your skill and contribution level. It is earned by solving issues, participating in discussions, and helping the community.
+                                XP represents your skill and contribution level. It is earned by solving coding challenges, winning duels, and participating in the arena.
                             </p>
                             <ul className="space-y-3 text-xs text-zinc-500">
                                 <li className="flex items-center gap-2">
                                     <div className="w-1 h-1 bg-[#D3E97A] rounded-full"></div>
-                                    Dynamic pricing based on issue impact
+                                    Dynamic rewards based on challenge difficulty
                                 </li>
                                 <li className="flex items-center gap-2">
                                     <div className="w-1 h-1 bg-[#D3E97A] rounded-full"></div>
@@ -59,7 +59,7 @@ export default function RulesPage() {
                             <ul className="space-y-3 text-xs text-zinc-500">
                                 <li className="flex items-center gap-2">
                                     <div className="w-1 h-1 bg-[#D3E97A] rounded-full"></div>
-                                    Automated payouts upon PR merge
+                                    Automated payouts upon successful challenge solving
                                 </li>
                                 <li className="flex items-center gap-2">
                                     <div className="w-1 h-1 bg-[#D3E97A] rounded-full"></div>
@@ -76,7 +76,7 @@ export default function RulesPage() {
                                 <div>
                                     <h4 className="text-white font-bold mb-3">1. Verification Integrity</h4>
                                     <p className="text-sm">
-                                        All submissions must be your original work. Plagiarism or using multiple accounts to claim the same bounty will result in searching an immediate ban and forfeiture of all credits.
+                                        All submissions must be your original work. Plagiarism or using multiple accounts to gain unfair advantage in duels will result in an immediate ban.
                                     </p>
                                 </div>
                                 <div>
@@ -102,12 +102,12 @@ export default function RulesPage() {
 
                         <div className="flex flex-col md:flex-row items-center justify-between gap-8 p-8 border border-[#D3E97A]/20 bg-[#D3E97A]/5 rounded-2xl">
                             <div>
-                                <h3 className="text-2xl font-technor font-bold text-white mb-2">Ready to start?</h3>
-                                <p className="text-zinc-400 text-sm">Browse the issues and pick your first bounty today.</p>
+                                <h3 className="text-2xl font-technor font-bold text-white mb-2">Ready to duel?</h3>
+                                <p className="text-zinc-400 text-sm">Pick your arena and prove your speed today.</p>
                             </div>
-                            <Link href="/issues">
+                            <Link href="/duel">
                                 <button className="px-8 py-4 bg-[#D3E97A] text-black font-bold uppercase tracking-widest text-sm hover:scale-105 transition-transform">
-                                    Explore Issues
+                                    Browse Showdowns
                                 </button>
                             </Link>
                         </div>
