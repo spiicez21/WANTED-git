@@ -10,8 +10,8 @@ const Footer = () => {
                         WANTED.git<span className="text-[10px] align-top ml-1 text-[#D3E97A]">BETA</span>
                     </div>
                     <p className="text-zinc-500 font-light text-sm max-w-sm">
-                        The AI-powered bug bounty platform for open source.
-                        We turn issues into opportunities and code into currency.
+                        The ultimate competitive coding arena.
+                        Enter for Solo practice or Duel for Credits.
                     </p>
                 </div>
                 <div>

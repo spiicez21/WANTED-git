@@ -17,14 +17,14 @@ export default function TermsPage() {
                         <section>
                             <h2 className="text-xl font-technor font-bold text-white mb-4 uppercase tracking-wider">1. Acceptance of Terms</h2>
                             <p>
-                                By accessing or using WANTED.git, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our platform. These terms govern your use of our AI-powered bug bounty platform and all related services.
+                                By accessing or using WANTED.git, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our platform. These terms govern your use of our competitive coding arena and all related services.
                             </p>
                         </section>
 
                         <section>
                             <h2 className="text-xl font-technor font-bold text-white mb-4 uppercase tracking-wider">2. Description of Service</h2>
                             <p>
-                                WANTED.git is a platform that identifies, ranks, and prices open-source issues from GitHub. We provide a marketplace where contributors can earn Experience Points (XP) and Credits (CR) for resolving these issues. Our services include algorithmic pricing, automated payouts, and community reputation systems.
+                                WANTED.git is a platform that hosts, ranks, and facilitates competitive coding challenges. We provide a marketplace where contributors can earn Experience Points (XP) and Credits (CR) for solving these challenges in Solo or Duel modes. Our services include automated judging, real-time matchmaking, and community reputation systems.
                             </p>
                         </section>
 
@@ -36,16 +36,16 @@ export default function TermsPage() {
                         </section>
 
                         <section>
-                            <h2 className="text-xl font-technor font-bold text-white mb-4 uppercase tracking-wider">4. Bounty Eligibility and Payouts</h2>
+                            <h2 className="text-xl font-technor font-bold text-white mb-4 uppercase tracking-wider">4. Challenge Rewards and Payouts</h2>
                             <p>
-                                Bounty rewards (Credits) are only eligible for payout after a Pull Request is successfully merged into the target repository and verified by our system. We reserve the right to withhold payouts if we detect gaming, botting, or any attempt to exploit the reward system.
+                                Challenge rewards (Credits) are only eligible for payout after a solution is successfully submitted and verified by our automated judging engine. We reserve the right to withhold payouts if we detect gaming, botting, cheating in duels, or any attempt to exploit the reward system.
                             </p>
                         </section>
 
                         <section>
                             <h2 className="text-xl font-technor font-bold text-white mb-4 uppercase tracking-wider">5. Intellectual Property</h2>
                             <p>
-                                All code contributed through WANTED.git is subject to the license of the target repository. By submitting a solution, you represent that you have the right to contribute that code and that it does not infringe on any third-party intellectual property rights.
+                                All code submitted through WANTED.git challenges remains the property of the user but grants WANTED.git a license to use it for judging and educational purposes. By submitting a solution, you represent that you have the right to contribute that code and that it does not infringe on any third-party intellectual property rights.
                             </p>
                         </section>
 
@@ -59,12 +59,12 @@ export default function TermsPage() {
                         <section>
                             <h2 className="text-xl font-technor font-bold text-white mb-4 uppercase tracking-wider">7. Data Availability & GitHub Affiliation</h2>
                             <p>
-                                WANTED.git is an independent platform and is not affiliated with, endorsed by, or sponsored by GitHub, Inc. We utilize public GitHub APIs to access public repository data in accordance with GitHub's Terms of Service. We do not access private repositories or user data without explicit permission via our GitHub App installation.
+                                WANTED.git is an independent platform and is not affiliated with, endorsed by, or sponsored by GitHub, Inc. We utilize public GitHub APIs to facilitate authentication and profile display in accordance with GitHub's Terms of Service.
                             </p>
                         </section>
 
                         <div className="pt-12 border-t border-white/5 text-xs text-zinc-600">
-                            Last Updated: January 13, 2026
+                            Last Updated: January 20, 2026
                         </div>
                     </div>
                 </div>

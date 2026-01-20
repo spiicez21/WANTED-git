@@ -33,10 +33,10 @@ export default function LearnPage() {
                             Documentation
                         </div>
                         <h1 className="text-4xl md:text-7xl font-technor font-bold text-white mb-6 uppercase tracking-tighter">
-                            Mastering <span className="text-[#D3E97A]">Open Source</span>
+                            Mastering the <span className="text-[#D3E97A]">Arena</span>
                         </h1>
                         <p className="text-xl text-zinc-400 max-w-2xl leading-relaxed">
-                            A comprehensive guide to understanding Open Source Software, mastering Git version control, and contributing to the WANTED.git ecosystem.
+                            A comprehensive guide to understanding Competitive Coding, mastering your environment, and dominating the WANTED.git showdowns.
                         </p>
                     </header>
 
@@ -263,7 +263,7 @@ export default function LearnPage() {
                     <section>
                         <div className="flex items-center gap-4 mb-12 border-b border-white/10 pb-4">
                             <Github className="text-[#D3E97A]" size={32} />
-                            <h2 className="text-3xl font-bold text-white">The WANTED.git Workflow</h2>
+                            <h2 className="text-3xl font-bold text-white">The Arena Workflow</h2>
                         </div>
 
                         <div className="relative border-l-2 border-white/10 ml-4 md:ml-12 space-y-16">
@@ -275,19 +275,19 @@ export default function LearnPage() {
                                     <div className="flex items-start justify-between mb-6">
                                         <div>
                                             <span className="text-[#D3E97A] font-mono text-sm font-bold tracking-widest uppercase mb-2 block">Step 01</span>
-                                            <h3 className="text-2xl font-bold text-white">Find a Bounty</h3>
+                                            <h3 className="text-2xl font-bold text-white">Enter the Arena</h3>
                                         </div>
                                         <div className="p-3 bg-[#D3E97A]/10 rounded-lg text-[#D3E97A]">
                                             <Search size={24} />
                                         </div>
                                     </div>
                                     <p className="text-zinc-400 mb-6 leading-relaxed">
-                                        Navigate to our <strong>Issues</strong> page. Use filters to sort by difficulty, XP reward, or technology stack (React, Node, etc.). Look for "Good First Issue" tags if you are a beginner.
+                                        Choose your mode: <strong>Solo</strong> for practice or <strong>Duel</strong> for real-time head-to-head competition. Our matchmaking system will find an opponent of similar rank for duels.
                                     </p>
                                     <div className="flex gap-2 text-xs">
-                                        <span className="bg-[#222] px-3 py-1 rounded text-zinc-400">Difficulty Level</span>
-                                        <span className="bg-[#222] px-3 py-1 rounded text-zinc-400">XP Reward</span>
-                                        <span className="bg-[#222] px-3 py-1 rounded text-zinc-400">Tech Stack</span>
+                                        <span className="bg-[#222] px-3 py-1 rounded text-zinc-400">Matchmaking</span>
+                                        <span className="bg-[#222] px-3 py-1 rounded text-zinc-400">Elo Ranking</span>
+                                        <span className="bg-[#222] px-3 py-1 rounded text-zinc-400">Real-time</span>
                                     </div>
                                 </div>
                             </div>
@@ -299,20 +299,20 @@ export default function LearnPage() {
                                     <div className="flex items-start justify-between mb-6">
                                         <div>
                                             <span className="text-[#D3E97A] font-mono text-sm font-bold tracking-widest uppercase mb-2 block">Step 02</span>
-                                            <h3 className="text-2xl font-bold text-white">Fork & Fix</h3>
+                                            <h3 className="text-2xl font-bold text-white">Code Against the Clock</h3>
                                         </div>
                                         <div className="p-3 bg-[#D3E97A]/10 rounded-lg text-[#D3E97A]">
                                             <Code2 size={24} />
                                         </div>
                                     </div>
                                     <p className="text-zinc-400 mb-6 leading-relaxed">
-                                        Fork the repository to your own GitHub account. Create a new branch for your fix. Write clean, documented code that solves the issue.
+                                        Use our built-in Monaco editor to solve the challenge. You are scored based on <strong>correctness</strong> (60%), <strong>efficiency</strong> (25%), and <strong>speed</strong> (15%).
                                     </p>
                                     <div className="bg-black/50 p-4 rounded-lg border border-white/5">
                                         <div className="flex items-start gap-3">
                                             <AlertCircle size={16} className="text-[#D3E97A] mt-1 shrink-0" />
                                             <p className="text-sm text-zinc-400">
-                                                <strong>Pro Tip:</strong> Read the repository's <code className="text-white text-xs bg-zinc-800 px-1 py-0.5 rounded">CONTRIBUTING.md</code> file first to understand their coding standards.
+                                                <strong>Pro Tip:</strong> Anti-cheat is active. Copy-pasting is disabled during live duels to ensure a fair showdown.
                                             </p>
                                         </div>
                                     </div>
@@ -326,14 +326,14 @@ export default function LearnPage() {
                                     <div className="flex items-start justify-between mb-6">
                                         <div>
                                             <span className="text-[#D3E97A] font-mono text-sm font-bold tracking-widest uppercase mb-2 block">Step 03</span>
-                                            <h3 className="text-2xl font-bold text-white">Submit PR</h3>
+                                            <h3 className="text-2xl font-bold text-white">Submit for Verdict</h3>
                                         </div>
                                         <div className="p-3 bg-[#D3E97A]/10 rounded-lg text-[#D3E97A]">
                                             <GitPullRequest size={24} />
                                         </div>
                                     </div>
                                     <p className="text-zinc-400 leading-relaxed">
-                                        Push your branch and open a Pull Request (PR) to the original repository. In your PR description, link to the issue you solved using "Fixes #IssueNumber".
+                                        Once your solution is ready, hit <strong>Submit</strong>. Our automated judging engine will run your code against a series of test cases in a secure sandbox.
                                     </p>
                                 </div>
                             </div>
@@ -345,14 +345,14 @@ export default function LearnPage() {
                                     <div className="flex items-start justify-between mb-6">
                                         <div>
                                             <span className="text-[#D3E97A] font-mono text-sm font-bold tracking-widest uppercase mb-2 block">Step 04</span>
-                                            <h3 className="text-2xl font-bold text-white">Get Rewarded</h3>
+                                            <h3 className="text-2xl font-bold text-white">Claim Glory & Rewards</h3>
                                         </div>
                                         <div className="p-3 bg-[#D3E97A]/10 rounded-lg text-[#D3E97A]">
                                             <DollarSign size={24} />
                                         </div>
                                     </div>
                                     <p className="text-zinc-400 leading-relaxed">
-                                        Once the maintainer reviews and merges your code, our system automatically verifies the contribution. The bounty amount and XP are transferred to your WANTED.git account instantly.
+                                        Earn XP to climb the ranks from <strong>Rookie</strong> to <strong>Legend</strong>. High-tier duelists also earn Credits (CR) which can be used for platform perks or redeemed for real-world rewards.
                                     </p>
                                 </div>
                             </div>

@@ -17,7 +17,7 @@ export default function ConductPage() {
                         <section>
                             <h2 className="text-xl font-technor font-bold text-white mb-4 uppercase tracking-wider">Our Pledge</h2>
                             <p>
-                                In the interest of fostering an open and welcoming environment, we as contributors and maintainers pledge to making participation in our project and our community a harassment-free experience for everyone, regardless of age, body size, disability, ethnicity, gender identity and expression, level of experience, nationality, personal appearance, race, religion, or sexual identity and orientation.
+                                In the interest of fostering an open and welcoming environment, we as duelists and platform staff pledge to making participation in our arena and our community a harassment-free experience for everyone, regardless of age, body size, disability, ethnicity, gender identity and expression, level of experience, nationality, personal appearance, race, religion, or sexual identity and orientation.
                             </p>
                         </section>
 
@@ -43,10 +43,7 @@ export default function ConductPage() {
                         </section>
 
                         <section>
-                            <h2 className="text-xl font-technor font-bold text-white mb-4 uppercase tracking-wider">Our Responsibilities</h2>
-                            <p>
-                                Project maintainers are responsible for clarifying the standards of acceptable behavior and are expected to take appropriate and fair corrective action in response to any instances of unacceptable behavior.
-                            </p>
+                            Platform administrators are responsible for clarifying the standards of acceptable behavior and are expected to take appropriate and fair corrective action in response to any instances of unacceptable behavior.
                         </section>
 
                         <section>

@@ -80,21 +80,21 @@ export default function RulesPage() {
                                     </p>
                                 </div>
                                 <div>
-                                    <h4 className="text-white font-bold mb-3">2. Ghosting Policy</h4>
+                                    <h4 className="text-white font-bold mb-3">2. Fair Play & Inactivity</h4>
                                     <p className="text-sm">
-                                        If you claim an issue but do not submit a PR within 48 hours, the bounty will be released back to the community to ensure project momentum.
+                                        Disconnecting during a live duel or excessive inactivity in the arena will result in an automatic forfeit and a penalty to your rank points.
                                     </p>
                                 </div>
                                 <div>
                                     <h4 className="text-white font-bold mb-3">3. Quality Standards</h4>
                                     <p className="text-sm">
-                                        Code must follow the target repository's style guide. Low-quality or "spammy" PRs intended solely to farm XP will be rejected and may lead to rank de-leveling.
+                                        Solutions are judged on correctness, efficiency, and speed. Submitting "spam" code or attempting to crash the judging engine will lead to an immediate ban.
                                     </p>
                                 </div>
                                 <div>
                                     <h4 className="text-white font-bold mb-3">4. Community Respect</h4>
                                     <p className="text-sm">
-                                        Maintain professional conduct in all interactions with maintainers and other contributors. We value constructive collaboration over competition.
+                                        Maintain professional conduct in all interactions. Trash-talking, griefing, or harassment during duels is strictly prohibited. We value healthy competition.
                                     </p>
                                 </div>
                             </div>

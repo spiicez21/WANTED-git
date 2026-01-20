@@ -28,9 +28,9 @@ export default function SponsorPage() {
             benefits: [
                 "Everything in Individual",
                 "Logo featured on the Sponsors page",
-                "Priority issue tagging for your repo",
-                "1x Featured Bounty per month",
-                "Direct line to core developers"
+                "Priority challenge category sponsorship",
+                "1x Featured Showdown per month",
+                "Direct line to arena developers"
             ],
             color: "border-[#D3E97A]/20 bg-[#D3E97A]/5",
             textColor: "text-[#D3E97A]",
@@ -43,10 +43,10 @@ export default function SponsorPage() {
             benefits: [
                 "Everything in Startup",
                 "Secondary logo on the main Homepage",
-                "Unlimited Featured Bounties",
+                "Unlimited Sponsored Showdowns",
                 "Dedicated Account Manager",
                 "Custom XP/CR rewards for internal teams",
-                "Recruitment access to top contributors"
+                "Direct access to top 1% arena performers"
             ],
             color: "border-blue-500/20 bg-blue-500/5",
             textColor: "text-blue-500"
@@ -71,8 +71,8 @@ export default function SponsorPage() {
                             <span className="text-[#D3E97A]">PROTOCOL</span>
                         </h1>
                         <p className="text-zinc-500 max-w-2xl mx-auto text-lg leading-relaxed font-medium">
-                            Empower the builders of tomorrow. Your sponsorship directly funds micro-bounties
-                            and ensures the sustainability of high-impact open-source infrastructure.
+                            Empower the duelists of tomorrow. Your sponsorship directly funds prize pools
+                            and ensures the sustainability of high-stakes competitive coding infrastructure.
                         </p>
                     </div>
 

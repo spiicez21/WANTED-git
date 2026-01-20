@@ -17,7 +17,7 @@ export default function PrivacyPage() {
                         <section>
                             <h2 className="text-xl font-technor font-bold text-white mb-4 uppercase tracking-wider">1. Data We Collect</h2>
                             <p>
-                                When you use WANTED.git, we collect information necessary to provide our services. This includes your GitHub username, public profile information, and data related to your contributions. We use GitHub OAuth for authentication, and we do not store your GitHub password.
+                                When you use WANTED.git, we collect information necessary to provide our services. This includes your GitHub username, public profile information, and data related to your performance in coding challenges. We use GitHub OAuth for authentication, and we do not store your GitHub password.
                             </p>
                         </section>
 
@@ -27,17 +27,17 @@ export default function PrivacyPage() {
                                 We use your data to:
                             </p>
                             <ul className="list-disc list-inside mt-4 space-y-2">
-                                <li>Verify your contributions to open-source projects.</li>
-                                <li>Calculate your XP and rank on our leaderboards.</li>
-                                <li>Process bounty payouts through our payment partners.</li>
-                                <li>Improve our AI models for issue ranking and pricing.</li>
+                                <li>Verify your participation in coding challenges and duels.</li>
+                                <li>Calculate your XP and rank on our leaderboards based on speed and efficiency.</li>
+                                <li>Process reward payouts through our payment partners.</li>
+                                <li>Improve our automated judging engine and user experience.</li>
                             </ul>
                         </section>
 
                         <section>
                             <h2 className="text-xl font-technor font-bold text-white mb-4 uppercase tracking-wider">3. Data Sharing</h2>
                             <p>
-                                We do not sell your personal data to third parties. We may share information with payment processors (like Stripe) to facilitate payouts, or as required by law. Your public contribution data and rank are visible to other users on the platform.
+                                We do not sell your personal data to third parties. We may share information with payment processors (like Stripe) to facilitate payouts, or as required by law. Your public performance data, XP, and rank are visible to other users on the platform.
                             </p>
                         </section>
 
@@ -63,7 +63,7 @@ export default function PrivacyPage() {
                         </section>
 
                         <div className="pt-12 border-t border-white/5 text-xs text-zinc-600">
-                            Last Updated: December 25, 2025
+                            Last Updated: January 20, 2026
                         </div>
                     </div>
                 </div>
