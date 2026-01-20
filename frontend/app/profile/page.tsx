@@ -60,8 +60,8 @@ export default function ProfilePage() {
                                 </div>
                             )}
                         </div>
-                        <div className="absolute -bottom-2 -right-2 bg-western-gold text-black text-[10px] font-bold px-2 py-1 rounded-full uppercase">
-                            Legend
+                        <div className="absolute -bottom-2 -right-2 bg-western-gold text-black text-[10px] font-bold px-2 py-1 rounded-full uppercase shadow-[0_4px_12px_rgba(255,191,0,0.3)]">
+                            {user.rank || 'Rookie'}
                         </div>
                     </div>
 
@@ -144,6 +144,31 @@ export default function ProfilePage() {
                     <ProfileStats />
                 </div>
 
+                {/* Badge Cabinet */}
+                <div className="mb-16">
+                    <h2 className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-8 flex items-center gap-4">
+                        Badge Cabinet
+                        <div className="h-[1px] flex-1 bg-white/5"></div>
+                    </h2>
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                        {[
+                            { name: 'Bug Slayer', desc: 'Solved 10 major vulnerabilities', color: 'border-red-500/20 text-red-400' },
+                            { name: 'Test Champion', desc: '100% test coverage on 5 duels', color: 'border-blue-500/20 text-blue-400' },
+                            { name: 'On-Time Closer', desc: 'Fastest solver in 3 showdowns', color: 'border-[#D3E97A]/20 text-[#D3E97A]' },
+                            { name: 'Zero Rework', desc: 'Passed all tests on first try', color: 'border-western-gold/20 text-western-gold' },
+                            { name: 'Arena Pioneer', desc: 'Early adoptor of the protocol', color: 'border-zinc-500/20 text-zinc-400' }
+                        ].map((badge, i) => (
+                            <div key={i} className={`p-6 border ${badge.color} bg-white/[0.02] rounded-2xl flex flex-col items-center text-center group hover:bg-white/[0.04] transition-all`}>
+                                <div className="w-12 h-12 mb-4 bg-white/5 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <div className="w-6 h-6 rounded-full border-2 border-current opacity-50"></div>
+                                </div>
+                                <div className="text-[10px] font-bold uppercase tracking-widest mb-1">{badge.name}</div>
+                                <div className="text-[8px] text-zinc-600 uppercase leading-tight">{badge.desc}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
                 {/* Recent Showdowns */}
                 <div>
                     <div className="flex justify-between items-end mb-8">
@@ -158,8 +183,15 @@ export default function ProfilePage() {
                     </div>
 
                     <div className="grid grid-cols-1 gap-4">
-                        <div className="p-8 border border-white/5 bg-white/[0.02] text-center text-zinc-600 font-mono text-xs uppercase tracking-widest italic">
-                            No recent showdowns recorded in this frontier.
+                        <div className="p-12 border border-white/5 bg-white/[0.02] rounded-3xl text-center flex flex-col items-center">
+                            <div className="text-zinc-600 font-mono text-xs uppercase tracking-widest italic mb-6">
+                                No recent showdowns recorded in this frontier.
+                            </div>
+                            <Link href="/duel">
+                                <button className="px-6 py-2 border border-[#D3E97A]/20 text-[#D3E97A] hover:bg-[#D3E97A] hover:text-black transition-all text-[10px] font-bold uppercase tracking-widest rounded-full">
+                                    Find a Showdown
+                                </button>
+                            </Link>
                         </div>
                     </div>
                 </div>
