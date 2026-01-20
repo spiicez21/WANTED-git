@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
-import Editor from '@monaco-editor/react';
-import { useAuth } from '@/context/AuthContext';
-import { Trophy, Timer, Zap, Code2, ChevronRight } from 'lucide-react';
+import Footer from '../components/Footer';
+import QuestionCard from '../components/QuestionCard';
+import { Search, Filter, Terminal, Target, ShieldCheck, Trophy } from 'lucide-react';
 
 interface Problem {
     id: number;
@@ -14,29 +14,29 @@ interface Problem {
     xp_reward: number;
     time_limit: number;
     memory_limit: number;
-    expected_complexity_time: string;
-    expected_complexity_space: string;
 }
 
 export default function SoloMode() {
-    const { user } = useAuth();
     const [problems, setProblems] = useState<Problem[]>([]);
-    const [selectedProblem, setSelectedProblem] = useState<Problem | null>(null);
-    const [code, setCode] = useState('// Your code here...');
-    const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
-    const [result, setResult] = useState<any>(null);
-    const [cooldown, setCooldown] = useState(0);
-
-    useEffect(() => {
-        if (cooldown > 0) {
-            const timer = setTimeout(() => setCooldown(cooldown - 1), 1000);
-            return () => clearTimeout(timer);
-        }
-    }, [cooldown]);
+    const [filteredProblems, setFilteredProblems] = useState<Problem[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [filter, setFilter] = useState('All');
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         fetchProblems();
     }, []);
+
+    useEffect(() => {
+        let result = problems;
+        if (filter !== 'All') {
+            result = result.filter(p => p.difficulty.toLowerCase() === filter.toLowerCase());
+        }
+        if (searchQuery) {
+            result = result.filter(p => p.title.toLowerCase().includes(searchQuery.toLowerCase()));
+        }
+        setFilteredProblems(result);
+    }, [filter, searchQuery, problems]);
 
     const fetchProblems = async () => {
         try {
@@ -44,168 +44,142 @@ export default function SoloMode() {
             if (res.ok) {
                 const data = await res.json();
                 setProblems(data);
-                if (data.length > 0) setSelectedProblem(data[0]);
+                setFilteredProblems(data);
             }
         } catch (err) {
             console.error('Failed to fetch problems', err);
+        } finally {
+            setLoading(false);
         }
     };
 
-    const handleSubmit = async () => {
-        if (!selectedProblem || cooldown > 0) return;
-        setStatus('submitting');
-        setCooldown(10); // 10s cooldown
-
-        try {
-            // Simulated submission to the judging engine
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5050'}/api/submissions`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    problemId: selectedProblem.id,
-                    code,
-                    language: 'javascript'
-                })
-            });
-
-            // For MVP purposes, since we haven't implemented the POST /submissions route yet,
-            // we will simulate the response if the route fails or we can just implement the route now.
-            // Let's assume for now we want to see the UI.
-
-            setTimeout(() => {
-                setStatus('success');
-                setResult({
-                    score: 85.5,
-                    time: '124ms',
-                    memory: '24MB'
-                });
-            }, 2000);
-
-        } catch (err) {
-            setStatus('error');
-        }
-    };
+    const difficulties = ['All', 'Easy', 'Medium', 'Hard'];
 
     return (
-        <main className="min-h-screen bg-[#060606] text-[#EDEDED] font-clash">
+        <main className="min-h-screen bg-[#060606] text-[#EDEDED] font-clash flex flex-col">
             <Navbar />
 
-            <div className="flex flex-col lg:flex-row h-[calc(100vh-100px)] border-t border-white/5">
-                {/* Left Panel: Problem Selection & Description */}
-                <div className="w-full lg:w-1/3 border-r border-white/5 overflow-y-auto p-8">
-                    <div className="flex items-center gap-2 text-accent text-xs font-bold uppercase tracking-widest mb-4">
-                        <img src={`/ranks/${(user?.rank || 'rookie').toLowerCase()}.svg`} className="w-6 h-6" />
-                        Solo Bounty Hunt
-                    </div>
+            <div className="flex-1">
+                {/* Hero Section */}
+                <section className="relative py-20 border-b border-white/5 overflow-hidden">
+                    <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20 pointer-events-none"></div>
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[300px] bg-accent/10 blur-[120px] rounded-full"></div>
 
-                    <h1 className="text-3xl font-technor font-bold mb-6">
-                        {selectedProblem ? selectedProblem.title : 'Select a Problem'}
-                    </h1>
-
-                    <div className="flex gap-4 mb-8">
-                        <div className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold uppercase tracking-wider text-zinc-400">
-                            {selectedProblem?.difficulty || 'Easy'}
+                    <div className="container mx-auto px-6 relative z-10">
+                        <div className="max-w-3xl">
+                            <div className="flex items-center gap-2 text-accent text-xs font-bold uppercase tracking-widest mb-4">
+                                <Terminal className="w-4 h-4" />
+                                Protocol: Solo Bounty Hunt
+                            </div>
+                            <h1 className="text-5xl md:text-7xl font-technor font-bold mb-6 tracking-tight">
+                                CLAIM YOUR <span className="text-accent underline decoration-accent/30 underline-offset-8">BOUNTIES</span>
+                            </h1>
+                            <p className="text-zinc-400 text-lg md:text-xl leading-relaxed max-w-2xl">
+                                Enter the arena, Gunslinger. Sharpen your blades on these algorithmic challenges and earn XP to climb the ranks.
+                            </p>
                         </div>
-                        <div className="px-3 py-1 bg-accent/10 border border-accent/20 rounded-full text-[10px] font-bold uppercase tracking-wider text-accent">
-                            +{selectedProblem?.xp_reward || 30} XP
+                    </div>
+                </section>
+
+                {/* Filters & Search */}
+                <section className="sticky top-[100px] z-20 bg-[#060606]/80 backdrop-blur-md border-b border-white/5 py-4">
+                    <div className="container mx-auto px-6">
+                        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+                            <div className="flex flex-wrap gap-2">
+                                {difficulties.map(d => (
+                                    <button
+                                        key={d}
+                                        onClick={() => setFilter(d)}
+                                        className={`px-6 py-2 text-xs font-bold uppercase tracking-wider transition-all border ${filter === d ? 'bg-accent text-black border-accent' : 'bg-transparent text-zinc-500 border-white/10 hover:border-white/20'}`}
+                                    >
+                                        {d}
+                                    </button>
+                                ))}
+                            </div>
+
+                            <div className="relative w-full md:w-80">
+                                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+                                <input
+                                    type="text"
+                                    placeholder="Search bounties..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    className="w-full bg-white/5 border border-white/10 rounded-none py-3 pl-12 pr-4 text-sm focus:outline-none focus:border-accent/50 transition-colors"
+                                />
+                            </div>
                         </div>
                     </div>
+                </section>
 
-                    <div className="prose prose-invert max-w-none mb-12">
-                        <p className="text-zinc-400 leading-relaxed">
-                            {selectedProblem?.description || 'Pick a challenge from the list below to begin your training, Gunslinger.'}
-                        </p>
+                {/* Question Grid */}
+                <section className="py-12 md:py-20">
+                    <div className="container mx-auto px-6">
+                        {loading ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {[...Array(6)].map((_, i) => (
+                                    <div key={i} className="h-64 bg-white/5 animate-pulse border border-white/5"></div>
+                                ))}
+                            </div>
+                        ) : filteredProblems.length > 0 ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {filteredProblems.map(problem => (
+                                    <QuestionCard
+                                        key={problem.id}
+                                        id={problem.id}
+                                        title={problem.title}
+                                        difficulty={problem.difficulty}
+                                        xp_reward={problem.xp_reward}
+                                        time_limit={problem.time_limit}
+                                    />
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="text-center py-20 border border-dashed border-white/10">
+                                <Target className="w-12 h-12 text-zinc-700 mx-auto mb-4" />
+                                <h3 className="text-xl font-bold text-zinc-400">No Bounties Found</h3>
+                                <p className="text-zinc-600 mt-2">Try adjusting your filters or search query.</p>
+                            </div>
+                        )}
                     </div>
+                </section>
 
-                    <div className="space-y-4">
-                        <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-widest border-b border-white/5 pb-2">Available Contracts</h3>
-                        {problems.map(p => (
-                            <button
-                                key={p.id}
-                                onClick={() => setSelectedProblem(p)}
-                                className={`w-full text-left p-4 glass-card rounded-lg border transition-all flex items-center justify-between group ${selectedProblem?.id === p.id ? 'border-accent bg-accent/5' : 'border-white/5 hover:border-white/20'}`}
-                            >
+                {/* Stats Section */}
+                <section className="py-20 bg-white/5 border-t border-white/5">
+                    <div className="container mx-auto px-6">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                            <div className="flex items-start gap-4">
+                                <div className="p-3 bg-accent/10 rounded border border-accent/20">
+                                    <ShieldCheck className="w-6 h-6 text-accent" />
+                                </div>
                                 <div>
-                                    <div className={`text-sm font-bold ${selectedProblem?.id === p.id ? 'text-white' : 'text-zinc-300'}`}>{p.title}</div>
-                                    <div className="text-[10px] text-zinc-500 uppercase">{p.difficulty}</div>
+                                    <h4 className="text-lg font-bold mb-1">Secure Environment</h4>
+                                    <p className="text-sm text-zinc-500">Your code runs in isolated Docker containers for maximum safety.</p>
                                 </div>
-                                <ChevronRight className={`w-4 h-4 transition-transform ${selectedProblem?.id === p.id ? 'text-accent translate-x-1' : 'text-zinc-600 group-hover:text-zinc-400'}`} />
-                            </button>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Right Panel: Editor & Output */}
-                <div className="w-full lg:w-2/3 flex flex-col">
-                    <div className="flex-1 min-h-[500px] relative">
-                        <div className="absolute top-4 right-8 z-10 flex gap-4">
-                            <div className="flex items-center gap-2 bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-md border border-white/5 text-[10px] font-mono text-zinc-400">
-                                <Timer className="w-3 h-3 text-western-orange" />
-                                {selectedProblem?.time_limit}ms
                             </div>
-                            <div className="flex items-center gap-2 bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-md border border-white/5 text-[10px] font-mono text-zinc-400">
-                                <Zap className="w-3 h-3 text-western-gold" />
-                                {selectedProblem?.memory_limit}MB
-                            </div>
-                        </div>
-
-                        <Editor
-                            height="100%"
-                            defaultLanguage="javascript"
-                            theme="vs-dark"
-                            value={code}
-                            onChange={(v) => setCode(v || '')}
-                            options={{
-                                minimap: { enabled: false },
-                                fontSize: 14,
-                                fontFamily: 'JetBrains Mono, Menlo, Monaco, Courier New, monospace',
-                                padding: { top: 24 },
-                                scrollBeyondLastLine: false,
-                            }}
-                        />
-                    </div>
-
-                    <div className="h-48 border-t border-white/5 bg-[#0a0a0a] p-6 flex flex-col">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center gap-2 text-xs font-bold text-zinc-500 uppercase tracking-widest">
-                                <Code2 className="w-4 h-4" />
-                                Output Terminal
-                            </div>
-                            <button
-                                onClick={handleSubmit}
-                                disabled={status === 'submitting'}
-                                className={`px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${status === 'submitting' ? 'bg-zinc-800 text-zinc-500' : 'bg-accent text-black hover:bg-white'}`}
-                            >
-                                {status === 'submitting' ? 'Judging...' : 'Submit Code'}
-                            </button>
-                        </div>
-
-                        <div className="flex-1 bg-black/40 rounded border border-white/5 p-4 font-mono text-xs overflow-y-auto">
-                            {status === 'idle' && <span className="text-zinc-600">Waiting for submission...</span>}
-                            {status === 'submitting' && <span className="text-yellow-500 animate-pulse">Running test cases against Docker sandbox...</span>}
-                            {status === 'success' && (
-                                <div className="space-y-2">
-                                    <div className="text-accent font-bold">✓ ACCEPTED</div>
-                                    <div className="grid grid-cols-3 gap-8 mt-4">
-                                        <div>
-                                            <div className="text-zinc-500 text-[10px] uppercase">Final Score</div>
-                                            <div className="text-xl text-white font-technor">{result.score}</div>
-                                        </div>
-                                        <div>
-                                            <div className="text-zinc-500 text-[10px] uppercase">Execution</div>
-                                            <div className="text-xl text-white font-technor">{result.time}</div>
-                                        </div>
-                                        <div>
-                                            <div className="text-zinc-500 text-[10px] uppercase">Memory</div>
-                                            <div className="text-xl text-white font-technor">{result.memory}</div>
-                                        </div>
-                                    </div>
+                            <div className="flex items-start gap-4">
+                                <div className="p-3 bg-accent/10 rounded border border-accent/20">
+                                    <Terminal className="w-6 h-6 text-accent" />
                                 </div>
-                            )}
+                                <div>
+                                    <h4 className="text-lg font-bold mb-1">Multi-Language Support</h4>
+                                    <p className="text-sm text-zinc-500">Solve challenges in your favorite language, from JS to Rust.</p>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-4">
+                                <div className="p-3 bg-accent/10 rounded border border-accent/20">
+                                    <Trophy className="w-6 h-6 text-accent" />
+                                </div>
+                                <div>
+                                    <h4 className="text-lg font-bold mb-1">Proof of Work</h4>
+                                    <p className="text-sm text-zinc-500">Every solved bounty is recorded on your profile and ranks you up.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </section>
             </div>
+
+            <Footer />
         </main>
     );
 }
